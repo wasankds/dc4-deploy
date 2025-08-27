@@ -3,7 +3,10 @@ package-lock.json
 dbProcessExcel
 
 # ลบการติดตามโฟลเดอร์ที่เคยตามออกไป
-# git rm -r --cached dbProcessExcel
+# git rm -r --cached items
+items
+docs
+users
 
 
 # Logs

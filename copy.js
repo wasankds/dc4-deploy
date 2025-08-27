@@ -23,7 +23,7 @@ const folderNames = [
   'docs', 'items', 'users',                          
 ];
 //=== ไฟล์ที่จะก๊อปปี้ ใช้กับทั้งต้นทาง และ ปลายทาง
-const fileNames = ['dc4.js', 'package.json', 'README.md', 'create_folders.js'];
+const fileNames = ['dc4.js', 'package.json', 'README.md', 'create_folders.js', '.gitignore'];
 
 //=== สร้าางตัวแปรใหม่ที่มีโครงสร้าง
 //  { copyType: 'folder' | 'file', source: 'path', destination: 'path' }
