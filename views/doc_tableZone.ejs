@@ -1,0 +1,147 @@
+
+<!-- 1 - หัวตาราง -->
+<div class="row" id="tableHeaderCtn" style="position: relative;">
+  <button class="undo-delete-row-btn" id="btnUndoDeleteRow" title="ยกเลิกลบแถว" tabindex="-1">
+    <i class="fa fa-undo"></i>
+  </button>
+
+  <label class="col-05 lh-xs al-c bt-k bb-k bl-k pd-t-s pd-b-s">
+    <!-- <span class="fc-liblue clickable" onclick="sortItemsTableJs(1,'asc')">▲</span> -->
+    <span class="fs-sm">ลำดับ</span> 
+    <!-- <span class="fc-liblue clickable" onclick="sortItemsTableJs(1,'dsc')">▼</span> -->
+  </label>
+  <label class="col-54 lh-xs al-c bt-k bb-k bl-k pd-t-s pd-b-s">
+    <span class="fc-liblue clickable" onclick="sortItemsTableJs(2,'asc')">▲</span>
+    <span class="fs-sm">รายการ</span>
+    <span class="fc-liblue clickable" onclick="sortItemsTableJs(2,'dsc')">▼</span>
+  </label>
+  <label class="col-07 lh-xs al-c bt-k bb-k bl-k pd-t-s pd-b-s">
+    <span class="fs-sm">จำนวน</span>
+  </label>
+  <label class="col-08 lh-xs al-c bt-k bb-k bl-k pd-t-s pd-b-s">
+    <span class="fs-sm">หน่วย</span>
+  </label>
+  <label class="col-12 lh-xs al-c bt-k bb-k bl-k pd-t-s pd-b-s">
+    <span class="fs-sm">ราคา</span>
+  </label>
+  <label class="col-14 lh-xs al-c bt-k bb-k bl-k br-k pd-t-s pd-b-s">
+    <span class="fs-sm">รวม</span>
+  </label>
+
+  <!-- ปุ่ม + ลอยออกนอกตาราง -->
+  <button class="add-row-btn" id="btnAddRow" title="เพิ่มแถว" tabindex="-1">
+    <i class="fa fa-plus"></i>
+  </button>
+</div>
+
+<!-- 2 - สำหรับสร้างรายการ -->
+<div id="listCtn"></div>
+
+
+<!-- 3 - โซนผลรวม -->
+<div class="row" id="mainTotalCtn">
+
+  <!-- total col1 -->
+  <% if (show == 'remark') { %>
+  <%
+    // bill 1-3 แถวเท่านั้น เอกสารอื่นๆ 5-9 แถว
+    let minRows = !isBillDoc ? 5 : 1;
+    let maxRows = !isBillDoc ? 9 : 3;
+  %>
+  <div class="col-70" id="docRemarkCtn">
+    <textarea class="w-100 h-100" name="docRemark" id="docRemark" 
+              data-rows-min = "<%= minRows %>" data-rows-max = "<%= maxRows %>"
+              placeholder="หมายเหตุ/เงื่อนไขการชำระเงิน"
+              rows="<%= maxRows %>"><%= DOC_REMARK %></textarea>   
+  </div>
+
+  <% } else if (show == 'payment') { %>
+  <!-- วิธีชำระเงิน -->
+  <div class="col-70" id="docRemarkCtn">
+
+    <!--  -->
+    <div class="row mg-t-m" id="paymentMethodCtn">
+      <p>การชำระเงิน :</p>
+      <div>
+        <input type="radio" name="paymentMethod" id="paymentCash" value="paymentCash" required >
+        <label for="paymentCash">เงินสด</label>
+      </div>
+      <div>
+        <input type="radio" name="paymentMethod" id="paymentBankTransfer" value="paymentBankTransfer" required >
+        <label for="paymentBankTransfer">โอนเงิน</label>
+      </div>
+      <div>
+        <input type="radio" name="paymentMethod" id="paymentCheque" value="paymentCheque" required >
+        <label for="paymentCheque">เช็ค</label>
+      </div>
+      <div>
+        <input type="radio" name="paymentMethod" id="paymentOther" value="paymentOther" required >
+        <label for="paymentOther">อื่นๆ</label>
+      </div>
+    </div>
+
+    <!--  -->
+    <p>รายละเอียด :</p>
+    <textarea class="w-100" name="docRemark" id="docRemark" 
+              data-rows-min="1" data-rows-max = "3"
+              placeholder="หมายเหตุการชำระเงิน"
+              rows="3"><%= DOC_REMARK %></textarea>
+  </div>
+  <% } %>
+
+  <!-- total co#l2 -->
+  <div class="col-30" id="columnTotalCtn">
+
+    <% 
+      // สำหรับเลือกขีดเส้นใต้ 
+      const underliningTotal = !isBillDoc ? 'bb-k' : '' ;
+      const underliningTotal2 = !isBillDoc ? '' : 'bb-k-db' ;
+    %>
+
+
+    <% if(!isBillDoc) { %>
+    <!-- ปุ่ม เลือกวิธีคำนวณ VAT -->
+    <select class="select-vat-calculating" tabindex="-1"
+            id="selectVatCalculating" name="selectVatCalculating"
+            title="เลือกวิธีคำนวณ Vat">
+      <option value="noVat" selected>ไม่มี Vat</option>
+      <option value="vatIn">คำนวณ Vat ใน</option>
+      <option value="vatOut">คำนวณ Vat นอก</option>
+    </select> 
+    <% } %>
+
+    <!-- แถวรวม (Total Amount) -->
+    <div class="row <%= underliningTotal %>" id="totalCtn">
+      <p class="col-53">รวม</p>
+      <input class="col-47 no-arrow <%= underliningTotal2 %>" type="number" tabindex="-1"
+             readonly
+             id="totalAmount" name="totalAmount" >
+    </div>
+
+
+    <% if(!isBillDoc) { %>
+
+    <!-- แถว VAT -->
+    <div class="row bb-k" id="totalVatCtn">
+      <p class="col-53">ภาษีมูลค่าเพิ่ม 7%</p>
+      <input class="col-47 no-arrow" type="number"  tabindex="-1"
+             readonly min="0"
+             id="vatAmount" name="vatAmount">      
+    </div>
+
+    <!-- แถว Net Amount -->
+    <div class="row bb-k-db" id="netCtn">
+      <p class="col-53">รวมทั้งสิ้น</p>
+      <input class="col-47 no-arrow" type="number"  tabindex="-1"
+             readonly  min="0"
+             id="netAmount" name="netAmount" >
+    </div>
+
+    <% } %>
+
+  </div> <!-- total co#l2 -->
+
+
+</div>
+
+

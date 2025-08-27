@@ -1,0 +1,115 @@
+
+<%
+
+ const col_1 = 'col-07'
+ const col_2 = 'col-93'
+
+ const col_1_customerName = isBillDoc ? 'col-07' : 'col-08';
+ const col_2_customerName = isBillDoc ? 'col-93' : 'col-92';
+ const customerNameShow = isBillDoc ? 'นาม' : 'ลูกค้า';  
+%>
+
+<div class="rowg" id="customerCtn">
+
+  <!--  -->
+  <input type="hidden" id="customerId" name="customerId">
+
+  <!-- #3.1 : ข้อมูลลูกค้า - ซ้าย -->
+  <div class="colg-1" id="customerLeftCtn">
+
+    <!-- ชื่อลูกค้า -->
+    <div class="row">
+      <p class="<%= col_1_customerName %>"><%= customerNameShow %> :</p>
+      <input class="<%= col_2_customerName %>" type="text" placeholder="<%= customerNameShow %>"
+            required           
+            id="customerName" name="customerName">
+    </div>
+
+    <!-- ที่อยู่1 -->
+    <div class="row">
+      <p class="<%= col_1 %>">ที่อยู่ :</p>
+      <input class="<%= col_2 %>" type="text" placeholder="ที่อยู่1"
+            id="customerAddress1" name="customerAddress1">
+    </div>
+
+    <!-- ที่อยู่2 -->
+    <div class="row">
+      <p class="<%= col_1 %>"></p>
+      <input class="<%= col_2 %>" type="text" 
+            placeholder="ที่อยู่2"
+            id="customerAddress2" name="customerAddress2">
+    </div>
+    
+    <!-- ติดต่อ -->
+    <div class="row">
+      <p class="<%= col_1 %>"></p>
+      <input class="<%= col_2 %>" type="text" 
+            placeholder="ช่องทางการติดต่อ"
+            id="customerContactChannel" name="customerContactChannel">
+    </div>
+
+    <!-- เลขประจำตัวผู้เสียภาษีอากร -->
+    <% if(!isBillDoc) { %>
+    <div class="row">
+      <p class="<%= col_1 %>"></p>
+      <input class="<%= col_2 %>" type="text" 
+              placeholder="เลขประจำตัวผู้เสียภาษีอากร / เลขประจำตัวประชาชน"
+              id="customerTaxId" name="customerTaxId">
+    </div>
+
+    <!-- ผู้ติดต่อ -->
+    <div class="row">
+      <p class="<%= col_1 %>"></p>
+      <input class="<%= col_2 %>" type="text" 
+            placeholder="ผู้ติดต่อ"
+            id="customerContactPerson" name="customerContactPerson">
+    </div>
+    <% } %>
+
+  </div>
+
+  <!-- #3.2 : ข้อมูลลูกค้า - ขวา -->
+  <div class="colg-2" id="customerRightCtn">
+
+    <!-- วันที่ -->
+    <div class="row">
+      <p class="col-23">วันที่ :</p>
+      <input class="col-77 bg-white clickable" type="date" 
+            required tabindex="-1"
+            id="docDateTh" name="docDateTh">
+    </div>
+
+    <!-- เลขที่ -->
+    <div class="row">
+      <p class="col-23">เลขที่ :</p>
+      <input class="col-77" type="text"
+            placeholder="เลขที่เอกสาร" tabindex="-1"
+            readonly
+            id="docId" name="docId" >
+    </div>
+
+    <!-- อ้างอิง -->
+    <% if(!isBillDoc) { %>
+    <div class="row">
+      <p class="col-23">อ้างอิง :</p>
+      <input class="col-77" type="text" 
+            placeholder="เลขที่อ้างอิง"
+            id="docRefNo" name="docRefNo">
+    </div>
+    <% } %>
+
+    <!-- เพิ่มไอเท็ม -->
+    <div class="modalCtn mg-l-xl">
+      <input class="al-c pd-l-m mg-t-xl ba-d" type="text" 
+             id="searchItems" tabindex="-1"
+             placeholder="เพิ่มรายการจากข้อมูลไอเท็ม"
+             onfocus="popModalItems(event)" 
+             oninput="popModalItems(event)" >
+      <div class="modal">
+        <div class="modal-list"></div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

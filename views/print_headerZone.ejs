@@ -1,0 +1,44 @@
+<!-- #1 : Header  -->
+<!-- < if(!isBillDoc) { > -->
+<div class="d-flex justify-content-between pd-t-m pd-b-m bb-thick">
+
+  <!-- Logo -->
+  <% if(logoSrc_base64) { %>
+  <img src="<%- logoSrc_base64 %>"  onerror="this.style.display='none'" style="width:auto;height:50px;">
+  <% } %>
+
+  <!-- ที่อยู่ -->
+  <div class="al-r d-flex align-items-center">
+    <div class="lh-3xs">
+      <p class="fs-sm fw-b"><%= HEADER_COMPANY_NAME %></p>
+      <p><span class="fs-s fi"><%= HEADER_LINE_2 %></span></p>
+      <p><span class="fs-s fi"><%= HEADER_LINE_3 %></span></p>
+    </div>
+  </div>
+</div>
+<!-- < } > -->
+
+<!-- #2 : Title ใบเสนอราคา  -->
+<div class="pd-t-xl pd-b-s" style="position: relative;">     
+
+  <!-- Title -->
+  <!-- <p class="al-c fw-b fs-xxl"><span><%= title %></span></p> -->
+   
+  <!-- Title -->
+  <% if(!isBillDoc) { %>
+    <p class="al-c fw-b fs-xl">
+      <span id="docTitle" class="fw-b"><%= title %></span>
+    </p> 
+  <% } else { %>
+    <!-- บิลเงินสดเท่านั้น -->
+    <h2 class="al-c fs-xxl ba-k bdr5 pd-t-xl pd-b-xl">
+      <span class="fw-b" id="docTitle"><%= title %></span>
+    </h2>
+  <% }  %>
+
+  <% if(doc.docStatusNumber !== 2) { %>
+  <input class="ba-d al-c mg-t-xl bg-delete fw-b" type="text" readonly
+          value="เอกสารต้องอยู่ในสถานะ 2 จึงจะไม่มีลายน้ำ"
+          style="position:absolute;top:0;right:0px;width:250px;border-radius:3px!important;color: white!important;">
+  <% } %>
+</div> 

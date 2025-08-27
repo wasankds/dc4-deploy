@@ -1,0 +1,312 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('partials/meta',{ time:time}) %>
+  <title><%= title %></title>
+
+  <!-- Font Awesome -->
+  <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"> -->
+  <link rel="stylesheet" href="/cdn/fontawesome/css/all.min.css">
+  <!-- SweetAlert2 -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+  <script src="/cdn/sweetalert2.all.min.js"></script>
+  <!-- Flatpkr -->
+  <link rel="stylesheet" href="/cdn/flatpickr.min.css">
+  <script src="/cdn/flatpickr.js"></script>
+
+  <% if(!IS_PRODUCTION) { %>
+  <link rel="stylesheet" href="/css/utils.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/fontsAnuphan.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/toast.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/flex.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/alink.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/nav.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/modal.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/same.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/doc_input.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/doc_table.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/receipt.css?v=<%= time %>"> 
+  <% } else { %>
+  <link rel="stylesheet" href="/css-min/receipt.min.css?v=<%= time %>">
+  <% }  %>
+</head>
+<body>
+
+  <%- include('partials/nav.ejs') %>
+  <%- include('partials/notify.ejs', {msg:msg}) %> 
+
+  <!-- Top Toolbar -->
+  <header class="header-ctn">
+    <section class="header-toolbar">
+
+      <!-- 1 -->
+      <form class="header-toolbar-1 search-form">
+
+        <!--  -->
+        <input class="al-c bdr3 no-x" type="search" autocomplete="off"                  
+                title="เลขที่/ปี-เดือน-วัน/ลูกค้า"
+                placeholder="เลขที่/ปี-เดือน-วัน/ลูกค้า" name="sip">
+        <button class="btn-xlh btn-sm bg-search  btn-search-docs" 
+                data-status-number-filter="2"
+                title="ค้นหาเอกสาร">
+          <i class="fa fa-search"></i>
+        </button>
+
+        <button class="btn-xlh btn-sm bg-clear mg-l-m btn-clear-search" title="ล้างผลการค้นหา">
+          <i class="fa fa-broom"></i>
+        </button>
+        <select class="al-l w-100 h-100 bdr3 fs-m select-doc-to-load" 
+                style="min-width:350px;"
+                id="selectOtherToImport"></select>
+
+        <input class="al-c bdr3 h-100 search-res-num" type="text" 
+               style="width:60px;" readonly>
+
+        <!-- Import -->
+        <button class="btn-xlh btn-sm bg-import btn-import-doc" title="อิมพอร์ทเอกสาร">
+          <i class="fa fa-file-import"></i>
+        </button>
+
+        <!-- ตัวพิเศษ : ใช้คอลเล็กแบบเลือกได้  -->
+        <select class="al-c h-100 bdr3 fs-m mg-l-xl" style="width:auto;" name="collName" >
+          <option value="quotation">ใบเสนอราคา</option>
+          <option value="invoice">ใบแจ้งหนี้</option>
+        </select>
+      </form>
+
+      <!-- 2 -->
+      <form class="header-toolbar-2 search-form">
+
+        <!-- ใช้สำหรับระบุว่าจะค้นหาที่คอเล็กชั่นไหน -->
+        <input type="hidden" name="collName" value="<%= COLL_NAME %>">
+
+        <input class="al-c bdr3 no-x" type="search" autocomplete="off"                  
+                title="เลขที่/ปี-เดือน-วัน/ลูกค้า"
+                placeholder="เลขที่/ปี-เดือน-วัน/ลูกค้า" name="sip">
+        <button class="btn-xlh btn-sm bg-search btn-search-docs"
+                title="ค้นหาเอกสาร">
+          <i class="fa fa-search"></i>
+        </button>
+
+        <button class="btn-xlh btn-sm bg-clear mg-l-m btn-clear-search" 
+                title="ล้างผลการค้นหา" >
+          <i class="fa fa-broom"></i>
+        </button>
+        <select class="al-l w-100 h-100 bdr3 fs-m select-doc-to-load" 
+                style="min-width:350px;"
+                id="selectDocToLoad" name="selectDocToLoad"></select>
+
+        <input class="al-c bdr3 h-100  search-res-num" type="text"
+                style="width:60px;" readonly>
+        <button class="btn-xlh btn-sm bg-load btn-load-doc" type="submit" title="โหลดเอกสาร">
+          <i class="fa fa-download"></i>
+        </button>
+      </form>
+
+      <!-- 3 -->
+      <div class="header-toolbar-3">
+        <button class="btn-xlh btn-sm bg-cancel" 
+                id="btnCancelDoc"  title="ยกเลิกเอกสาร (ไม่สามารถแก้ไขได้) เสนอลูกค้าแล้ว แต่ลูกค้าไม่ตอบสนอง">
+          <i class="fa fa-ban mg-r-s"></i>ยกเลิก
+        </button>
+
+        <button class="btn-xlh btn-sm bg-finish mg-l-l" 
+                id="btnFinishDoc"  title="จบเอกสาร (ไม่สามารถแก้ไขได้) เสนอลูกค้าแล้ว ลูกค้าซื้อหรือว่าจ้างตามเอกสารนี้">
+          <i class="fa fa-flag-checkered mg-r-s"></i>จบ
+        </button>
+      </div>
+
+      <!-- 4 -->
+      <div class="header-toolbar-4" >
+        <button class="btn-xlh bg-change pd-l-l pd-r-l" id="btnPrintChanges" title="พิมพ์ข้อมูลการเปลี่ยนแปลง">
+          <i class="fa-solid fa-print mg-r-s"></i>Changes
+        </button>
+
+        <button class="btn-xlh btn-sm bg-download mg-l-l" id="btnDownloadImage" title="ดาวน์โหลดภาพ">
+          <i class="fa fa fa-download mg-r-s"></i>ภาพ
+        </button>
+
+        <button class="btn-xlh btn-sm bg-download mg-l-l" id="btnDownloadPDF" title="ดาวน์โหลด PDF">
+          <i class="fa fa fa-download mg-r-s"></i>PDF
+        </button>
+
+        <button class="btn-xlh bg-print pd-l-l pd-r-l mg-l-l" id="btnPrint" title="พิมพ์">
+          <i class="fa-solid fa-print mg-r-s"></i>HTML
+        </button>
+      </div>
+
+      <!-- 5 -->
+      <div class="header-toolbar-5">
+        <button class="btn-xlh btn-sm bg-save" id="btnSave" title="บันทึก">
+          <i class="fa fa fa-save mg-r-s"></i>บันทึก
+        </button>
+      </div>
+
+      <!-- 6 -->
+      <div class="header-toolbar-6">
+        <button class="btn-xlh btn-sm bg-new" 
+                id="btnClone" title="ทำสำเนา">
+          <i class="fa fa-file-circle-plus mg-r-s"></i>ทำสำเนา
+        </button>
+
+        <button class="btn-xlh btn-sm bg-clear mg-l-xl"
+                id="btnReload" title="โหลดใหม่">
+          <i class="fa fa-rotate-right mg-r-m"></i>โหลดใหม่
+        </button>
+      </div>
+
+    </section>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="watermark">
+
+    <!-- PAPER FORM -->
+    <form id="paperForm" class="mg-b-xxl" method="post" autocomplete="off">
+
+      <!-- paper ctn -->
+      <section class="paper-ctn" id="paperCtn">
+
+        <!-- #1 : Paper Header  -->
+        <%- include('doc_paperHeader.ejs') %>
+        <!-- #2 : Title  -->
+        <%- include('doc_paperTitle.ejs', { isBillDoc: false, }) %>
+        <!-- #3 : ข้อมูลลูกค้า -->
+        <%- include('doc_customerZone.ejs', { isBillDoc: false, }) %>
+        <!-- #4 : ตาราง -->
+        <div id="tableListCtn">
+          <%- 
+            include('doc_tableZone.ejs', { 
+              isBillDoc : false,
+              show : 'payment' 
+            }) 
+          %>
+        </div>
+
+        <!-- #5 : โซนล่าง (แต่ละเอกสารไม่เหมือนกัน) -->
+        <div class="row justify-content-between" id="bottomZoneCtn">
+
+          <!-- ตัวเลือกแสดงกรอบ -->
+          <select class="select-bottom-left-signature" tabindex="-1"
+                  id="selectBottomLeftSignature" name="selectBottomLeftSignature"
+                  title="เลือกแสดงลายเซ็นหรือไม่">
+            <option value="1" selected>แสดง</option>
+            <option value="0">ซ่อน</option>
+          </select> 
+          <!-- ตัวเลือกแสดงลายเซ็น -->
+          <select class="select-signature" tabindex="-1"
+                  id="selectProposerSignature" name="selectProposerSignature"
+                  title="เลือกแสดงลายเซ็นหรือไม่">
+            <option value="1" selected>แสดง</option>
+            <option value="0">ซ่อน</option>
+          </select> 
+
+          <!-- # ผู้รับเงิน -->
+          <section class="col-35 ba-k bdr5 pd-m fs-sm" id="bottomLeftCtn">
+
+            <!--  -->
+            <p class="fs-sm lh-3xs al-c">ผู้รับเงิน</p>            
+            <div class="al-c" style="min-height: 45px;"></div>
+            <!-- ผู้รับเงิน -->
+            <div class="al-c pd-l-m pd-r-m">
+              <div class="col-100 d-flex justify-content-between bt-k-d">
+                <span class="mg-t-m">(</span>
+                <span class="w-100 mg-t-m bb-k-d"></span>
+                <span class="mg-t-m">)</span>
+              </div>
+              <div class="col-100 d-flex justify-content-between fs-sm">
+                <span class="mg-t-m nowrap">วันที่</span>
+                <span class="mg-t-m bb-k-d w-100"></span>
+              </div>
+            </div>
+          </section>
+
+          <!-- # ว่าง -->
+          <div class="col-35" id="bottomMiddleCtn"></div>
+
+          <!-- # ลงชื่อ -->
+          <section class="col-30" id="bottomRightCtn">
+
+            <!--  -->
+            <p class="fs-sm lh-3xs mg-t-l al-c">ลงชื่อ</p>
+            
+            <!-- ภาพลายเซ็น -->
+            <div id="proposerImageSignatureCtn">
+              <% if(userImageSignature_Src) { %>
+              <img id="proposerImageSignature"
+                   onerror="this.style.display='none';"
+                   src="<%- userImageSignature_Src ? userImageSignature_Src : '' %>" 
+                   alt="ลายเซ็นผู้เสนอราคา">
+              <% } %>
+            </div>
+
+            <!-- ผู้เสนอราคา -->
+            <div class="al-c">
+
+              <!-- มาจาก Session : ดึง userId มาเลย  -->
+              <input type="hidden" id="proposerId" name="proposerId" tabindex="-1"
+                     value="<%= userId ? userId : '' %>">
+
+              <!--  -->
+              <div class="col-100 d-flex justify-content-between bt-k-d">
+                <span class="mg-t-m">(</span>
+                <span class="w-100 mg-t-m">
+                  <input class="al-c fw-b" type="text" 
+                         id="proposerFullname" name="proposerFullname" tabindex="-1"
+                         readonly
+                         value="<%= userFullname ? userFullname : '' %>">
+                </span>
+                <span class="mg-t-m">)</span>
+              </div>
+
+            </div>
+
+          </section>          
+        </div> <!-- สำหรับลูกค้า -->  
+        
+        
+      </section><!-- paper ctn -->
+
+    </form>
+
+  </main>
+
+  <!--  -->
+  <%- include('partials/footer') %>
+
+  <!--  -->
+  <script>
+    const USER_ID_SESSION = `<%= userId %>` ;
+
+    const PATH_MAIN = `<%= PATH_MAIN %>` ;
+    const PATH_FETCH = `<%= PATH_FETCH %>` ;
+    const PATH_SEARCH = `<%= PATH_SEARCH %>` ;
+    const PATH_SAVE = `<%= PATH_SAVE %>` ;
+    const PATH_LOAD = `<%= PATH_LOAD %>` ;
+    const PATH_PRINT = `<%= PATH_PRINT %>` ;
+    const PATH_CHANGES = `<%= PATH_CHANGES %>` ;
+    const PATH_STATUS = `<%= PATH_STATUS %>` ;
+    const DOC_ID = `<%= DOC_ID %>` ;
+    const SIP = `<%= SIP %>` ;
+    const SIP_QUOTATION = `<%= SIP_QUOTATION %>` ;
+    const SIP_INVOICE = `<%= SIP_INVOICE %>` ;
+  </script>
+  <% if(!IS_PRODUCTION) { %>
+  <script type="text/javascript" src="/js/script_all.js?v=<%= time %>"></script>
+  <script type="text/javascript" src="/js/nav.js?v=<%= time %>"></script>
+  <script type="text/javascript" src="/js/notify.js?v=<%= time %>"></script>
+  <script type="text/javascript" src="/js/doc_table.js?v=<%= time %>"></script>
+  <script type="text/javascript" src="/js/doc_modal.js?v=<%= time %>"></script>
+  <script type="text/javascript" src="/js/doc_print.js?v=<%= time %>"></script>
+  <script type="text/javascript" src="/js/doc_crudSame.js?v=<%= time %>"></script>
+  <script type="text/javascript" src="/js/doc_formAction.js?v=<%= time %>"></script>
+  <script type="text/javascript" src="/js/doc_domContentLoaded.js?v=<%= time %>"></script>
+  <script type="text/javascript" src="/js/receipt.js?v=<%= time %>"></script>
+  <% } else { %>
+  <script src="/js-min/receipt.obf.js"></script>
+  <% }  %>
+
+</body>
+</html>
+

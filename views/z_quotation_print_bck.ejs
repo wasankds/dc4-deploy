@@ -1,0 +1,350 @@
+
+<!DOCTYPE html>
+<html lang="en"><head>
+
+  <title><%= title %></title>
+
+  <% if(!IS_PRODUCTION) { %>
+  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/utils.css?v=<%= time %>">
+  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/flex.css?v=<%= time %>">
+  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/same.css?v=<%= time %>">
+  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/quotation.css?v=<%= time %>"> 
+  <% } else { %>
+  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css-min/quotationPrint.min.css?v=<%= time %>">
+  <% }  %>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@400;700&display=swap');
+    * {
+      font-family: 'Anuphan', sans-serif;
+    }
+    * {
+      font-family: "Anuphan", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 400;
+      font-style: normal;
+      font-variation-settings: "wdth" 100;
+    }
+
+    body{ /* overide background-color ใน quotation.css */
+      background: white!important;
+    }
+    .paper-ctn textarea ,
+    .paper-ctn input[type=text],
+    .paper-ctn input[type=number]{ 
+      background-color: white!important;
+      color: blue!important;
+      pointer-events: none; /* ไม่ให้แก้ไข */
+    }
+
+    @media print {
+      .no-print { display: none; }
+      .page-break-before { display: block; page-break-before: always; }
+    }     
+  </style>
+</head>
+<body>
+
+  <%
+    const docId = doc.docId ? doc.docId : '';
+    const docStatusNumber = doc.docStatusNumber ? doc.docStatusNumber : '';
+    const watermarkClass = doc.docStatusNumber !== 2 ? 'watermark' : '';
+    //=== สำหรับใช้ในตาราง
+    const col_1 = 'col-05'
+    const col_2 = 'col-54'
+    const col_3 = 'col-07'
+    const col_4 = 'col-08'
+    const col_5 = 'col-12'
+    const col_6 = 'col-14'
+
+  %>
+
+  <!-- MAIN CONTAINER -->
+  <main class="<%= watermarkClass %>">
+
+    <!-- PAPER FORM -->
+    <form id="paperForm" class="mg-b-xxl" method="post" autocomplete="off">
+
+      <section class="paper-ctn" id="paperCtn">
+
+        <!-- #1 : Header  -->
+        <div class="d-flex justify-content-between pd-t-m pd-b-m bb-thick">
+
+          <!-- Logo -->
+          <img src="<%= logoSrc_base64 %>" style="width:auto;height:50px;">
+
+          <!-- ที่อยู่ -->
+          <div class="al-r d-flex align-items-center">
+            <div class="lh-3xs">
+              <p class="fs-sm fw-b"><%= HEADER_COMPANY_NAME %></p>
+              <p><span class="fs-s fi"><%= HEADER_LINE_2 %></span></p>
+              <p><span class="fs-s fi"><%= HEADER_LINE_3 %></span></p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- #2 : Title ใบเสนอราคา  -->
+        <div class="pd-t-xl pd-b-s" style="position: relative;">     
+
+          <!-- Title -->
+          <p class="al-c fw-b fs-xxl"><span>ใบเสนอราคา</span></p>
+          
+
+          <% if(docStatusNumber !== 2) { %>
+          <input class="ba-d al-c mg-t-xl bg-delete fw-b" type="text" readonly
+                 value="เอกสารต้องอยู่ในสถานะ 2 จึงจะไม่มีลายน้ำ"
+                 style="position:absolute;top:0;right:0px;width:250px;border-radius:3px!important;color: white!important;">
+          <% } %>
+        </div> 
+          
+        <!-- #3 : ข้อมูลลูกค้า -->
+        <%- include('print_customerZone.ejs') %>
+
+        <!-- #4 --><!-- รายการ - Container -->
+        <div id="tableListCtn" style="position: relative;">
+
+            <!-- เลขหน้า -->
+            <!-- ตรวจสอบเลขตัดหน้าใหม่ -->
+            <% var tableRowsNum = doc.tableRows.length %>
+            <% 
+              let pageNum = 1
+              if      (tableRowsNum > 0  && tableRowsNum <= 18) {  pageNum = 1 }  <!-- 18 -->
+              else if (tableRowsNum > 18 && tableRowsNum <= 57) {  pageNum = 2 }  <!-- 30+26 -->
+              else if (tableRowsNum > 57 && tableRowsNum <= 91) {  pageNum = 3 }  <!-- 30+35+26 -->
+              else if (tableRowsNum > 91 && tableRowsNum <= 126) { pageNum = 4 }  <!-- 30+35*2+26 -->
+            %>
+            <% if(pageNum > 1) { %>
+            <p class="fs-s" style="position: absolute; top:-20px; right: 0;">หน้า 1/<%= pageNum %></p>
+            <% } %>
+
+          <!-- #1 หัวตาราง : ทำเป็นตัวแปรสำหรับใช้ซ้ำ -->
+          <% 
+            var tableHeader = `
+            <div class="row" style="position: relative;">
+              <label class="${col_1} lh-xs al-c bt-k bb-k bl-k pd-t-s pd-b-s"><span class="fs-sm">ลำดับ</span></label>
+              <label class="${col_2} lh-xs al-c bt-k bb-k bl-k pd-t-s pd-b-s"><span class="fs-sm">รายการ</span></label>
+              <label class="${col_3} lh-xs al-c bt-k bb-k bl-k pd-t-s pd-b-s"><span class="fs-sm">จำนวน</span></label>
+              <label class="${col_4} lh-xs al-c bt-k bb-k bl-k pd-t-s pd-b-s"><span class="fs-sm">หน่วย</span></label>
+              <label class="${col_5} lh-xs al-c bt-k bb-k bl-k pd-t-s pd-b-s"><span class="fs-sm">ราคา</span></label>
+              <label class="${col_6} lh-xs al-c bt-k bb-k bl-k pd-t-s pd-b-s br-k"><span class="fs-m">รวม</span></label>  
+            </div>` 
+
+            var blankRow = `
+              <div class="row bb-k">
+                <input class="${col_1} al-c lh-xs bl-k" type="text" value="">
+                <input class="${col_2} al-l lh-xs bl-k pd-l-s" type="text" value="">
+                <input class="${col_3} al-c lh-xs bl-k pd-r-s" type="text" value="">
+                <input class="${col_4} al-c lh-xs bl-k" type="text" value="">
+                <input class="${col_5} al-r lh-xs bl-k pd-r-s" type="text" value="">
+                <input class="${col_6} al-r lh-xs bl-k pd-r-s br-k" type="text" value="">
+              </div>`;
+          %>
+
+          <!-- หัวตารางหน้าแรก -->
+          <%- tableHeader %>
+          
+          <!-- #2 รายการ -->
+          <div>
+          
+          <!-- 1หน้า -->
+          <% if(tableRowsNum > 0 && tableRowsNum <= 18) { %>
+            <% doc.tableRows.forEach( obj => { %>
+              <div class="row bb-k" >
+                <input class="<%= col_1 %> al-c lh-xs bl-k" type="text" value="<%= obj.no %>">
+                <input class="<%= col_2 %> al-l lh-xs bl-k pd-l-s" type="text" value="<%= obj.description %>">
+                <input class="<%= col_3 %> al-c lh-xs bl-k pd-r-s" type="text" value="<%= obj.quantity %>">
+                <input class="<%= col_4 %> al-c lh-xs bl-k" type="text" value="<%= obj.unit %>">
+                <input class="<%= col_5 %> al-r lh-xs bl-k pd-r-s" type="text" value="<%= obj.price %>">
+                <input class="<%= col_6 %> al-r lh-xs bl-k pd-r-s br-k" type="text" value="<%= obj.amount %>">
+              </div>
+            <% }) %>
+            <!-- เติ่มแถวว่่างให้หน้า1 -->
+            <% for(let i = 0; i < (18 - tableRowsNum); i++) { %>
+              <%- blankRow %>  
+            <% } %>
+          <!-- 2หน้า -->
+          <% }else if(tableRowsNum > 18 && tableRowsNum <= 57) { %>
+            <% for(let i = 0; i < tableRowsNum; i++) { %>
+              <%- i == 30 ? `<div class="page-break-before fs-s al-r"><span class="pd-r-l">[${docId}]</span>หน้า 2/2<div>` : '' %>
+              <%- i == 30 ? tableHeader : '' %>  <!-- ซ้ำหัวตาราง  -->
+              <div class="row bb-k">
+                <input class="<%= col_1 %> al-c lh-xs bl-k" type="text" value="<%= doc.tableRows[i].no %>">
+                <input class="<%= col_2 %> al-l lh-xs bl-k pd-l-s" type="text" value="<%= doc.tableRows[i].description %>">
+                <input class="<%= col_3 %> al-c lh-xs bl-k pd-r-s" type="text" value="<%= doc.tableRows[i].quantity %>">
+                <input class="<%= col_4 %> al-c lh-xs bl-k" type="text" value="<%= doc.tableRows[i].unit %>">
+                <input class="<%= col_5 %> al-r lh-xs bl-k pd-r-s" type="text" value="<%= doc.tableRows[i].price %>">
+                <input class="<%= col_6 %> al-r lh-xs bl-k pd-r-s br-k" type="text" value="<%= doc.tableRows[i].amount %>">
+              </div>
+            <% } %>
+            <!-- เติ่มแถวว่่างให้หน้า2 -->
+            <% const blankLoopNum = 57 - tableRowsNum  %>
+            <% for(let i = 0; i < blankLoopNum; i++) { %><%- blankRow %><% } %>
+          <!-- 3หน้า -->
+          <% }else if(tableRowsNum > 57 && tableRowsNum <= 91) { %>
+            <% doc.tableRows.forEach( (obj,i) => { %>
+              <%- i == 30 ? `<div class="page-break-before fs-s al-r"><span class="pd-r-l">[${docId}]</span>หน้า 2/3<div>` : '' %>
+              <%- i == 65 ? `<div class="page-break-before fs-s al-r"><span class="pd-r-l">[${docId}]</span>หน้า 2/3<div>` : '' %>
+              <%- i == 30 ? tableHeader : '' %>  <!-- ซ้ำหัวตาราง  -->
+              <%- i == 65 ? tableHeader : '' %>  <!-- ซ้ำหัวตาราง  -->
+              <div class="row bb-k">
+                <input class="<%= col_1 %> al-c lh-xs bl-k" type="text" value="<%= obj.no %>">
+                <input class="<%= col_2 %> al-l lh-xs bl-k pd-l-s" type="text" value="<%= obj.description %> - <%= i %>/<%= tableRowsNum %>">
+                <input class="<%= col_3 %> al-c lh-xs bl-k pd-r-s" type="text" value="<%= obj.quantity %>">
+                <input class="<%= col_4 %> al-c lh-xs bl-k" type="text" value="<%= obj.unit %>">
+                <input class="<%= col_5 %> al-r lh-xs bl-k pd-r-s" type="text" value="<%= obj.price %>">
+                <input class="<%= col_6 %> al-r lh-xs bl-k pd-r-s br-k" type="text" value="<%= obj.amount %>">
+              </div>
+            <% }) %>
+            <!-- เติ่มแถวว่่างให้หน้า3 -->
+            <% const blankLoopNum = 91 - tableRowsNum  %>
+            <% for(let i = 0; i < blankLoopNum; i++) { %><%- blankRow %><% } %>
+          <!-- 4หน้า -->
+          <% }else if(tableRowsNum > 91 && tableRowsNum <= 126) { %>
+            <% doc.tableRows.forEach( (obj,i) => { %>
+              <%- i == 30 ? `<div class="page-break-before fs-s al-r"><span class="pd-r-l">[${docId}]</span>หน้า 2/4<div>` : '' %>
+              <%- i == 65 ? `<div class="page-break-before fs-s al-r"><span class="pd-r-l">[${docId}]</span>หน้า 3/4<div>` : '' %>
+              <%- i == 100 ? `<div class="page-break-before fs-s al-r"><span class="pd-r-l">[${docId}]</span>หน้า 4/4<div>` : '' %>
+              <%- i == 30 ? tableHeader : '' %>  <!-- ซ้ำหัวตาราง  -->
+              <%- i == 65 ? tableHeader : '' %>  <!-- ซ้ำหัวตาราง  -->
+              <%- i == 100 ? tableHeader : '' %>  <!-- ซ้ำหัวตาราง  -->
+              <div class="row bb-k">
+                <input class="<%= col_1 %> al-c lh-xs bl-k" type="text" value="<%= obj.no %>">
+                <input class="<%= col_2 %> al-l lh-xs bl-k pd-l-s" type="text" value="<%= obj.description %> - <%= i %>/<%= tableRowsNum %>">
+                <input class="<%= col_3 %> al-c lh-xs bl-k pd-r-s" type="text" value="<%= obj.quantity %>">
+                <input class="<%= col_4 %> al-c lh-xs bl-k" type="text" value="<%= obj.unit %>">
+                <input class="<%= col_5 %> al-r lh-xs bl-k pd-r-s" type="text" value="<%= obj.price %>">
+                <input class="<%= col_6 %> al-r lh-xs bl-k pd-r-s br-k" type="text" value="<%= obj.amount %>">
+              </div>
+            <% }) %>
+            <!-- เติ่มแถวว่่างให้หน้า4 -->
+            <% const blankLoopNum = 126 - tableRowsNum  %>
+            <% for(let i = 0; i < blankLoopNum; i++) { %><%- blankRow %><% } %>
+          <% } %>
+          </div>
+
+
+          <!-- 3 - โซนผลรวม -->
+          <div class="row" id="mainTotalCtn">
+
+            <!-- total co#l1 -->
+            <div class="col-70" id="paymentMethodCtn">
+              <textarea name="docRemark" id="docRemark" 
+                        class="w-100 h-100 al-l bd-n pd-m lh-3xs" 
+                        style="resize: none;overflow: hidden;"
+                        rows="9"><%= doc.docRemark %></textarea>
+            </div>
+
+            <!-- total co#l2 -->
+            <div class="col-30" id="columnTotalCtn">
+
+              <!-- แถวรวม : Total Amount -->
+              <div class="row bb-k" id="totalCtn">
+                <p class="col-53 lh-4xs al-r pd-t-m">
+                  <span class="fs-sm fw-b">รวม</span>
+                </p>
+                <input class="col-47 al-r pd-r-s fw-b" type="text" 
+                       value="<%= doc.totalAmount %>">
+              </div>
+
+              <!-- แถว VAT -->
+              <div class="row bb-k" id="totalVatCtn">
+                <p class="col-53 lh-4xs al-r pd-t-m">
+                  <span class="fs-sm fw-b">ภาษีมูลค่าเพิ่ม 7%</span>
+                </p>
+                <input class="col-47 al-r pd-r-s fw-b" type="text" 
+                      value="<%= doc.vatAmount %>" >               
+              </div>
+
+              <!-- แถว Net Amount -->
+              <div class="row bb-k-db" id="netCtn">
+                <p class="col-53 al-r lh-4xs pd-t-m">
+                  <span class="fs-sm fw-b">รวมทั้งสิ้น</span>
+                </p>
+                <input class="col-47 al-r pd-r-s fw-b" type="text" 
+                       value="<%= doc.netAmount %>" >
+              </div>
+
+            </div> <!-- total co#l2 -->
+
+          </div>
+
+        </div>
+
+
+        <!-- #5 : สำหรับลูกค้า -->
+        <div class="row">
+
+          <!--  #5-1 -->
+          <div class="col-40 ba-k pd-l fs-sm bdr5">
+            <p>สำหรับลูกค้า : ยืนยันการว่าจ้างตามเงื่อนข้างต้น</p>
+            <p style="min-height: 55px;"></p>
+            <p class="al-c bt-k-d">ลายเซ็นผู้มีอำนาจ (ลงชื่อและประทับตรา)</p>
+            <p class="al-c row mg-t-m">
+              <span class="nowrap mg-l-xxl">วันที่ (</span>
+              <span class="w-100 bb-k-d"></span>
+              <span class="mg-r-xxl">)</span>
+            </p>
+          </div>
+
+          <!--  #5-2 -->
+          <div class="col-30"></div>
+
+          <!--  #5-3 -->
+          <div class="col-30">
+
+            <p id="proposerLabel">ผู้เสนอราคา</p>
+
+            <div id="proposerImageSignatureCtn">
+              <!-- ต้องมีภาพลายเซ็น และ ต้องเปิดแสดงลายเซ็นด้วย -->
+              <% if(userImageSignature_Src && doc.selectProposerSignature == '1') { %>
+              <img src="<%- userImageSignature_Src ? userImageSignature_Src : '' %>" >
+              <% } %>
+            </div>
+            <div class="al-c">
+              <div id="proposerFullnameCtn">
+                <span>(</span>
+                <input type="text"  tabindex="-1"
+                       readonly
+                       id="proposerFullname" name="proposerFullname" 
+                       value="<%= userFullname ? userFullname : '' %>">
+                <span>)</span>
+              </div>
+            </div>
+          </div>
+          
+        </div>   <!-- 5 -->  
+        
+        
+      </section><!-- paper ctn -->
+    </form>
+
+    
+  </main>
+
+  <!--  -->
+  <% if(action == 'print') { %>
+  <footer class="al-c no-print">
+    <button class="btn bg-black fc--white pd-l-xxl pd-r-xxl pd-t-l pd-b-l clickable" 
+            type="button" onclick="window.print()">พิมพ์
+    </button>
+    <button class="btn bg-black fc--white pd-l-xxl pd-r-xxl pd-t-l pd-b-l clickable" 
+            type="button" onclick="window.close()">ปิดหน้าต่าง
+    </button>
+  </footer>
+  <% } %>
+
+  <script>
+    //  ปรับความสูงของ textarea - docRemark ให้อยู่ในช่วง 5-9 บรรทัด
+    document.addEventListener('DOMContentLoaded', () => {
+      const docRemark = document.getElementById('docRemark');
+      if(docRemark){
+        let linesText = docRemark.value.split('\n').length;
+        docRemark.rows = linesText < 5 ? 5 : linesText > 9 ? 9 : linesText;
+      }
+    });
+  </script>
+
+</body>
+</html>
+

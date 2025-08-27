@@ -1,0 +1,217 @@
+<form id="formTab1" autocomplete="off" 
+      action="<%= PATH_SAVE %>" 
+      method="post"
+      onsubmit="createSpinner()">
+
+  <!--  -->      
+  <section>    
+
+    <!-- COMPANY_NAME -->
+    <div class="rowg">
+      <label class="colg-12" title="COMPANY_NAME">* ไทเทิ้ลหน้าแรก</label> 
+      <input class="colg-25 pd-l-m" type="text" 
+              name="COMPANY_NAME" id="COMPANY_NAME" 
+              value="<%= dataSettings?.COMPANY_NAME ?? '' %>"
+              placeholder="COMPANY_NAME">
+    </div>
+
+    <!-- 
+    *******************************************************
+    *******************************************************
+    *******************************************************
+    ******************** เปิดใช้งานเมนุ  *********************
+    *******************************************************
+    *******************************************************
+    *******************************************************
+    -->    
+
+    <!-- <hr style="border:1px dashed gray;" class="mg-xxl"> -->
+    <div class="rowg">
+      <label class="colg-12 lh-tb"></label> 
+      <p class="colg-25 lh-tb">
+        <i class="fas fa-toggle-on mg-r-m"></i>เปิดใช้งานเมนู
+      </p>
+    </div>
+
+    <!-- SETTINGS_SYSTEM -->
+    <div class="rowg">
+      <label class="colg-12"></label> 
+      <div class="colg-25 ">
+        <label class="cb-ctn al-l" title="SETTINGS_SYSTEM">
+          <span>ตั้งค่าระบบครั้งแรก</span>
+          <input type="checkbox" 
+                  id="SETTINGS_SYSTEM" name="SETTINGS_SYSTEM" 
+                  <%= dataSettings?.SETTINGS_SYSTEM == 'on' ? 'checked' : '' %> >
+          <span style="left:1px" class="cb-checkmark"></span>
+        </label>
+      </div>
+    </div>
+
+
+    <!-- TERM_AND_CONDITION -->
+    <div class="rowg">
+      <label class="colg-12"></label> 
+      <div class="colg-25 ">
+        <label class="cb-ctn al-l" title="TERM_AND_CONDITION">
+          <span>ข้อกำหนดและเงื่อนไข</span>
+          <input type="checkbox" 
+                  name="TERM_AND_CONDITION" 
+                  <%= dataSettings?.TERM_AND_CONDITION === 'on' ? 'checked' : '' %> >
+          <span style="left:1px" class="cb-checkmark"></span>
+        </label>
+      </div>
+    </div>             
+
+
+    <!-- 
+    *******************************************************
+    *******************************************************
+    *******************************************************
+    ************************** เฉพาะ O ********************
+    *******************************************************
+    *******************************************************
+    *******************************************************
+    -->
+
+    <% if(['O'].includes(userAuthority)) { %>
+
+    <hr style="border:1px dashed gray;" class="mg-xxl">
+
+    <div class="rowg">
+      <label class="colg-12 lh-tb"></label> 
+      <p class="colg-25 lh-tb">เฉพาะ O</p class="fc-lime">
+    </div>
+
+
+    <!-- EMAIL_WHOSEND -->
+    <div class="rowg">
+      <label class="colg-12" title="EMAIL_WHOSEND">ชื่อสำหรับส่งอีเมล</label> 
+      <input class="colg-25 vd pd-l-m" type="text" minlength="5" 
+              value="<%= dataSettings?.EMAIL_WHOSEND ?? '' %>"
+              id="EMAIL_WHOSEND" name="EMAIL_WHOSEND" 
+              required placeholder="ชื่อสำหรับส่งอีเมล">
+    </div>
+
+    <!-- EMAIL_PASS -->
+    <div class="rowg">
+      <label class="colg-12" title="EMAIL_PASS">รหัสส่งอีเมลสำหรับแอปพลิเคชัน</label> 
+      <input class="colg-25 vd pd-l-m" type="text" minlength="5" 
+              value="<%= dataSettings?.EMAIL_PASS ?? '' %>"
+              id="EMAIL_PASS" name="EMAIL_PASS" 
+              required placeholder="รหัสส่งอีเมลสำหรับแอปพลิเคชัน">
+    </div>
+
+  </section>
+
+  <% } %>    
+
+  <!-- Buttons/Save -->
+  <section class="rowg mg-t-xxl <%= ['O','A'].includes(userAuthority) ? '' : 'dp-n' %>">
+    <label class="colg-12"></label>
+    <button class="colg-23 bg-save lh-label" type="submit">
+      <i class="fas fa-save"></i> บันทึก
+    </button>
+  </section>
+
+</form>
+
+
+
+
+
+<!-- 
+*******************************************************
+*******************************************************
+*******************************************************
+************************ Telegram  *********************
+*******************************************************
+*******************************************************
+*******************************************************
+-->
+
+<!-- 
+<hr style="border:1px dashed gray;" class="mg-xxl">
+<div class="rowg">
+  <label class="colg-12 lh-tb"></label> 
+  <p class="colg-25 lh-tb">
+    <i class="fas fa-paper-plane mg-r-m"></i>Telegram
+  </p>
+</div>
+
+<div class="rowg">
+  <label class="colg-12" title="TELEGRAM_NOTIFY (แจ้งเตือนผ่าน Telegram)">แจ้งเตือนผ่าน Telegram</label> 
+  <select class="colg-25 pd-l-m" id="TELEGRAM_NOTIFY" name="TELEGRAM_NOTIFY">
+    <option value="off" <%= dataSettings?.TELEGRAM_NOTIFY == 'off' ? 'selected' : '' %>>off</option>
+    <option value="on"  <%= dataSettings?.TELEGRAM_NOTIFY == 'on' ? 'selected' : '' %>>on</option>
+  </select>
+</div> 
+
+<div class="rowg">
+  <label class="colg-12" title="TELEGRAM_BOT_TOKEN">Telegram Bot Token</label> 
+  <input class="colg-25 pd-l-m" type="text" id="TELEGRAM_BOT_TOKEN" 
+          name="TELEGRAM_BOT_TOKEN" id="TELEGRAM_BOT_TOKEN" 
+          value="<%= dataSettings?.TELEGRAM_BOT_TOKEN ?? '' %>"
+          placeholder="TELEGRAM BOT TOKEN "
+          <%= ['O','A'].includes(userAuthority) ? '' : 'readonly' %> >
+</div> 
+
+<div class="rowg">
+  <label class="colg-12" title="TELEGRAM_GROUP_CHAT_ID">Telegram Group Chat Id</label> 
+  <input class="colg-25 pd-l-m" type="text" id="TELEGRAM_GROUP_CHAT_ID" 
+          name="TELEGRAM_GROUP_CHAT_ID" id="TELEGRAM_GROUP_CHAT_ID" 
+          value="<%= dataSettings?.TELEGRAM_GROUP_CHAT_ID ?? '' %>"
+          placeholder="TELEGRAM_GROUP_CHAT_ID "
+          <%= ['O','A'].includes(userAuthority) ? '' : 'readonly' %> >
+</div> 
+
+<div class="rowg">
+  <label class="colg-12" title="TELEGRAM_COMMENT (คำอธิบาย Telegram)">Telegram Comment</label> 
+  <input class="colg-25 pd-l-m" type="text" 
+          name="TELEGRAM_COMMENT" id="TELEGRAM_COMMENT" 
+          value="<%= dataSettings?.TELEGRAM_COMMENT ?? '' %>"
+          placeholder="TELEGRAM_COMMENT ">
+</div> -->
+
+<!-- 
+*******************************************************
+*******************************************************
+*******************************************************
+******************** แก้ไขไม่ได้  *********************
+*******************************************************
+*******************************************************
+*******************************************************
+-->
+
+<!-- 
+<hr style="border:1px dashed gray;" class="mg-xxl">
+<div class="rowg">
+  <label class="colg-12 lh-tb"></label> 
+  <p class="colg-25 fc-orange lh-tb">
+    <i class="fas fa-ban mg-r-m"></i>แก้ไขไม่ได้ มาจากระบบ
+  </p>
+</div>
+
+<div class="rowg">
+  <label class="colg-12" title="ITEM_TYPE">* ชนิดอุปกรณ์</label> 
+  <input class="colg-25 vd pd-l-m" type="text" minlength="10" placeholder="ชนิดอุปกรณ์" 
+          value=""
+          required disabled
+          name="ITEM_TYPE" id="ITEM_TYPE" >
+</div> 
+
+<div class="rowg">
+  <label class="colg-12" title="ITEM_STATUS">* สถานะอุปกรณ์</label> 
+  <input class="colg-25 vd pd-l-m" type="text" minlength="10" placeholder="สถานะอุปกรณ์"
+          value=""
+          required disabled
+          id="ITEM_STATUS" name="ITEM_STATUS" >
+</div>
+
+<div class="rowg">
+  <label class="colg-12" title="PLACE_TO_USE">* สถานที่ใช้งาน</label> 
+  <input class="colg-25 vd pd-l-m" type="text" minlength="10" placeholder="สถานที่ใช้งาน"
+          value=""
+          required disabled
+          id="PLACE_TO_USE" name="PLACE_TO_USE" >
+</div> 
+-->

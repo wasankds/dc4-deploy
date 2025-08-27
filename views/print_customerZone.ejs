@@ -1,0 +1,75 @@
+  
+<!-- #3 : ข้อมูลลูกค้า -->
+<div class="rowg" id="customerCtn">
+
+  <!-- #3.1 : ข้อมูลลูกค้า - ซ้าย -->
+  <div class="colg-1" id="customerLeftCtn">   
+
+    <!-- ชื่อลูกค้า -->
+    <div class="row">
+      <p class="col-08"><span class="fs-m">ลูกค้า :</span></p>
+      <input class="col-92" type="text" value="<%= doc.customerName %>">
+    </div>
+
+    <!-- ที่อยู่1 -->
+    <div class="row">
+      <p class="col-07">ที่อยู่ :</p>
+      <input class="col-93" type="text" value="<%= doc.customerAddress1 %>">
+    </div>
+
+    <!-- ที่อยู่2 -->
+    <div class="row">
+      <p class="col-07"></p>
+      <input class="col-93" type="text" value="<%= doc.customerAddress2 %>">
+    </div>
+      
+    <!-- ติดต่อ -->
+    <div class="row">
+      <p class="col-07"></p>
+      <input class="col-93" type="text" value="<%= doc.customerContactChannel %>">
+    </div>
+
+    <!-- เลขประจำตัวผู้เสียภาษีอากร -->
+    <% if(!isBillDoc) { %>
+    <div class="row">
+      <p class="col-07"></p>
+      <input class="col-93" type="text" value="<%= doc.customerTaxId %>">
+    </div>    
+
+    <!-- ผู้ติดต่อ -->
+    <div class="row">
+      <p class="col-07"></p>
+      <input class="col-93" type="text" value="<%= doc.customerContactPerson %>">
+    </div>
+    <% } %>
+    
+  </div>
+
+  <!-- #3.2 : ข้อมูลลูกค้า - ขวา -->
+  <div class="colg-2" id="customerRightCtn">
+
+    <!-- วันที่ -->
+    <div class="row">
+      <p class="col-20">วันที่ :</p>
+      <input class="col-80" type="text" value="<%= doc.docDateTh %>">
+    </div>
+
+    <!-- เลขที่ -->
+    <div class="row">
+      <p class="col-20">เลขที่ :</p>
+      <input class="col-80" type="text" value="<%= doc.docId %>">
+    </div>
+
+    <!-- อ้างอิง -->
+    <% if(!isBillDoc) { %>
+    <div class="row">
+      <p class="col-20">อ้างอิง :</p>
+      <input class="col-80" type="text" value="<%= doc.docRefNo %>">
+    </div>
+    <% } %>
+
+  </div>
+
+</div>
+
+

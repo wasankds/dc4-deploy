@@ -1,0 +1,96 @@
+<form id="formQuotation" autocomplete="off" 
+      action="<%= PATH_SAVE_QUOTATION %>" 
+      method="post"
+      enctype="multipart/form-data"
+      onsubmit="createSpinner()">
+
+  <!--  -->      
+  <section>    
+    
+    <!-- <hr style="border:1px dashed gray;" class="mg-xxl"> -->
+    <div class="rowg">
+      <label class="colg-12 lh-tb"></label> 
+      <p class="colg-25 lh-tb">ผู้ออกเอกสาร (หัวกระดาษ)</p>
+    </div> 
+
+    <!--  -->
+    <div class="rowg">
+      <label class="colg-12" title="LOGO_PATH">อัปภาพโหลดโลโก้</label> 
+      <input class="colg-25 vd pd-l-m" type="file"
+              accept=".png"
+              title="ภาพโลโก้ ขนาด 200x220px รับเฉพาะ .png เท่านั้น"
+              id="HEADER_QUOTATION_LOGO_FILE" name="HEADER_QUOTATION_LOGO_FILE">
+    </div>
+
+    <!-- -->
+    <div class="rowg">
+      <label class="colg-12" title="LOGO_PATH">ชื่อภาพโลโก้</label> 
+      <input class="colg-25 vd pd-l-m" type="text"
+              placeholder=""
+              value="<%= settingsQuotation?.HEADER_QUOTATION_IMAGE ?? '' %>"
+              readonly  >
+    </div>
+
+    <!--  -->
+    <div class="rowg">
+      <label class="colg-12" title="HEADER_COMPANY_NAME">* ชื่อบริษัท</label> 
+      <input class="colg-25 vd pd-l-m" type="text" 
+              placeholder="ชื่อบริษัท" 
+              title="เช่น บริษัท ทดสอบ จำกัด"
+              value="<%= settingsQuotation?.HEADER_COMPANY_NAME ?? '' %>"
+              required
+              name="HEADER_COMPANY_NAME" id="HEADER_COMPANY_NAME" >
+    </div> 
+
+    <!--  -->
+    <div class="rowg">
+      <label class="colg-12" title="HEADER_LINE_2">* หัวกระดาษบรรทัดที่ 2</label> 
+      <input class="colg-25 vd pd-l-m" type="text"
+              placeholder="หัวกระดาษบรรทัดที่ 2"
+              title="เช่น 1234 ซอยทดสอบ ถนนทดสอบ แขวงทดสอบ เขตทดสอบ กรุงเทพฯ 10000 โทร./แฟกซ์ 0-2123-4567 มือถือ 08-1234-5678"
+              value="<%= settingsQuotation?.HEADER_LINE_2 ?? '' %>"
+              required 
+              id="HEADER_LINE_2" name="HEADER_LINE_2" >
+    </div>
+
+    <!--  -->
+    <div class="rowg">
+      <label class="colg-12" title="HEADER_LINE_3">* หัวกระดาษบรรทัดที่ 3</label> 
+      <input class="colg-25 vd pd-l-m" type="text"
+              placeholder="หัวกระดาษบรรทัดที่ 3"
+              title="เช่น เว็บ : wasankds.com, email : wasankds@gmail.com เลขประจำตัวผู้เสียภาษีอากร 0000000000000"
+              value="<%= settingsQuotation?.HEADER_LINE_3 ?? '' %>"
+              required 
+              id="HEADER_LINE_3" name="HEADER_LINE_3" >
+    </div>
+
+    <!--  -->
+    <div class="rowg">
+      <label class="colg-12 lh-tb"></label> 
+      <p class="colg-25 lh-tb">หมายเหตุ</p>
+    </div> 
+
+    <!--  -->
+    <div class="rowg">
+      <label class="colg-12 lh-tb" title="DOC_REMARK">หมายเหตุ (สูงสุด 9 บรรทัด)</label> 
+      <textarea class="colg-25 vd pd-m" rows="9" 
+                title="สูงสุด 9บรรทัด"
+                style="resize:none;overflow: hidden;"
+                data-rows-min = "5"
+                data-rows-max = "9"
+                id="DOC_REMARK" name="DOC_REMARK"
+                placeholder="หมายเหตุท้ายกระดาษ"><%= settingsQuotation?.DOC_REMARK ?? '' %></textarea>
+    </div>
+
+  </section>    
+
+  <!-- Buttons/Save -->
+  <section class="rowg mg-t-xxl <%= ['O','A'].includes(userAuthority) ? '' : 'dp-n' %>">
+    <label class="colg-12"></label>
+    <button class="colg-23 bg-save lh-label" type="submit">
+      <i class="fas fa-save"></i> บันทึกการตั้งค่าใบเสนอราคา
+    </button>
+  </section>
+
+</form>
+

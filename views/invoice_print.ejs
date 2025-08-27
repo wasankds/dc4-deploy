@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <title><%= title %></title>
+  <% if(!IS_PRODUCTION) { %>
+  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/utils.css?v=<%= time %>">
+  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/flex.css?v=<%= time %>">
+  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/same.css?v=<%= time %>">
+  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/invoice.css?v=<%= time %>"> 
+  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/same_print.css?v=<%= time %>">
+  <% } else { %>
+  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css-min/invoicePrint.min.css?v=<%= time %>">
+  <% }  %>
+</head>
+<body>
+
+  <%
+    var watermarkClass = doc.docStatusNumber !== 2 ? 'watermark' : '';
+  %>
+
+  <!-- MAIN CONTAINER -->
+  <main class="<%= watermarkClass %>">
+
+    <!-- PAPER FORM -->
+    <form id="paperForm" class="mg-b-xxl" method="post" autocomplete="off">
+
+      <section class="paper-ctn" id="paperCtn">
+
+        <!-- #1 : Header  -->
+        <!-- #2 : Title ใบเสนอราคา  -->
+        <%- include('print_headerZone.ejs', { isBillDoc : false }) %>
+          
+        <!-- #3 : ข้อมูลลูกค้า -->
+        <%- include('print_customerZone.ejs', { isBillDoc:false }) %>
+
+        <!-- #4 --><!-- รายการ - Container -->
+        <%- include('print_tableZone.ejs', { isBillDoc:false }) %>
+
+        <!-- #5 : โซนล่าง (แต่ละเอกสารไม่เหมือนกัน) -->
+        <div class="row justify-content-between" id="bottomZoneCtn">
+
+          <!-- # ผู้รับเอกสาร -->
+          <% if(doc.selectBottomLeftSignature == 1) { %>
+          <section class="col-35 ba-k bdr5 pd-m fs-sm" id="bottomLeftCtn">
+            <p class="fs-sm lh-3xs al-c">ผู้รับเอกสาร</p>            
+            <div class="al-c" style="min-height: 45px;"></div>
+            <div class="al-c pd-l-m pd-r-m">
+              <div class="col-100 d-flex justify-content-between bt-k-d">
+                <span class="mg-t-m">(</span>
+                <span class="w-100 mg-t-m bb-k-d"></span>
+                <span class="mg-t-m">)</span>
+              </div>
+              <div class="col-100 d-flex justify-content-between fs-sm">
+                <span class="mg-t-m nowrap">วันที่</span>
+                <span class="mg-t-m bb-k-d w-100"></span>
+              </div>
+            </div>
+          </section>
+          <% } %>
+
+          <!--  -->
+          <div class="col-35"></div>
+
+          <!--  -->
+          <div class="col-30">
+
+            <p class="fs-m lh-3xs al-c">ลงชื่อ</p>
+
+             <div id="proposerImageSignatureCtn">
+              <% if(doc.proposerImageSign && doc.selectProposerSignature == '1') { %>
+              <img id="proposerImageSignature" src="<%- doc.proposerImageSign ? doc.proposerImageSign : '' %>" >
+              <% } %>
+            </div>
+
+            <div class="al-c">
+              <div class="col-100 d-flex justify-content-between bt-k-d">
+                <span class="">(</span>
+                <span class="w-100">
+                  <input class="al-c fw-b" type="text" readonly
+                         value="<%= userFullname ? userFullname : '' %>">
+                </span>
+                <span class="">)</span>
+              </div>
+            </div>
+
+          </div>
+          
+        </div>   <!-- 5 -->  
+        
+        
+      </section><!-- paper ctn -->
+    </form>
+
+    
+  </main>
+
+  <!--  -->
+  <% if(action == 'print') { %>
+    <%- include('partials/print_footer.ejs') %>
+  <% } %>
+  <script src="<%= global.DOMAIN_ALLOW %>/js/print_adjust.js"></script>
+
+</body>
+</html>
+

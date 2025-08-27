@@ -1,0 +1,506 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('partials/meta',{ time:time}) %>
+  <title><%= title %></title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/cdn/fontawesome/css/all.min.css">
+  <% if(!IS_PRODUCTION) { %>
+  <link rel="stylesheet" href="/css/utils.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/fontsAnuphan.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/alink.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/toast.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/cb.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/input.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/nav.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/same.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/manageSettings.css?v=<%= time %>">
+  <% } else { %>
+  <link rel="stylesheet" href="/css-min/manageSettings.min.css?v=<%= time %>">
+  <% }  %>
+</head>
+<body>
+
+  <%- include('partials/notify.ejs', {msg:msg}) %> 
+  <%- include('partials/nav.ejs') %>
+  
+  <main>
+
+    <section class="pd-b-s">
+      <div class="pd-l">
+        <h1 class="al-c">
+          <i class="fas fa-sliders-h mg-r-m"></i> 
+          <span><%= title %></span>
+        </h1>
+      </div>
+    </section>
+
+    <section>
+      
+      <!-- Tab links -->
+      <div class="tab">
+        <div class="tabMenu col-20" id="tab1Menu" onclick="event.preventDefault();openMenu(this,'tabcontent1')">ทั่วไป</div>
+        <div class="tabMenu col-20" id="tab2Menu" onclick="event.preventDefault();openMenu(this,'tabcontent2')"><%= PAGE_QUOTATION %></div>
+        <div class="tabMenu col-20" id="tab3Menu" onclick="event.preventDefault();openMenu(this,'tabcontent3')"><%= PAGE_INVOICE %></div>
+        <div class="tabMenu col-20" id="tab4Menu" onclick="event.preventDefault();openMenu(this,'tabcontent4')"><%= PAGE_RECEIPT %></div>
+      </div>
+
+      <!-- #1 -->
+      <div id="tabcontent1" class="tabcontent">
+        <form id="formTab1" autocomplete="off" 
+              action="<%= PATH_SAVE %>" 
+              method="post"
+              onsubmit="createSpinner()">
+    
+          <!-- #Tab 1 : General -->      
+          <section>
+    
+            
+            <!-- 
+            *******************************************************
+            *******************************************************
+            *******************************************************
+            ************************ Telegram  *********************
+            *******************************************************
+            *******************************************************
+            *******************************************************
+            -->
+    
+            <!-- 
+            <hr style="border:1px dashed gray;" class="mg-xxl">
+            <div class="rowg">
+              <label class="colg-12 lh-tb"></label> 
+              <p class="colg-25 lh-tb">
+                <i class="fas fa-paper-plane mg-r-m"></i>Telegram
+              </p>
+            </div>
+    
+            <div class="rowg">
+              <label class="colg-12" title="TELEGRAM_NOTIFY (แจ้งเตือนผ่าน Telegram)">แจ้งเตือนผ่าน Telegram</label> 
+              <select class="colg-25 pd-l-m" id="TELEGRAM_NOTIFY" name="TELEGRAM_NOTIFY">
+                <option value="off" <%= dataSettings?.TELEGRAM_NOTIFY == 'off' ? 'selected' : '' %>>off</option>
+                <option value="on"  <%= dataSettings?.TELEGRAM_NOTIFY == 'on' ? 'selected' : '' %>>on</option>
+              </select>
+            </div> 
+    
+            <div class="rowg">
+              <label class="colg-12" title="TELEGRAM_BOT_TOKEN">Telegram Bot Token</label> 
+              <input class="colg-25 pd-l-m" type="text" id="TELEGRAM_BOT_TOKEN" 
+                     name="TELEGRAM_BOT_TOKEN" id="TELEGRAM_BOT_TOKEN" 
+                     value="<%= dataSettings?.TELEGRAM_BOT_TOKEN ?? '' %>"
+                     placeholder="TELEGRAM BOT TOKEN "
+                     <%= ['O','A'].includes(userAuthority) ? '' : 'readonly' %> >
+            </div> 
+    
+            <div class="rowg">
+              <label class="colg-12" title="TELEGRAM_GROUP_CHAT_ID">Telegram Group Chat Id</label> 
+              <input class="colg-25 pd-l-m" type="text" id="TELEGRAM_GROUP_CHAT_ID" 
+                     name="TELEGRAM_GROUP_CHAT_ID" id="TELEGRAM_GROUP_CHAT_ID" 
+                     value="<%= dataSettings?.TELEGRAM_GROUP_CHAT_ID ?? '' %>"
+                     placeholder="TELEGRAM_GROUP_CHAT_ID "
+                     <%= ['O','A'].includes(userAuthority) ? '' : 'readonly' %> >
+            </div> 
+            
+            <div class="rowg">
+              <label class="colg-12" title="TELEGRAM_COMMENT (คำอธิบาย Telegram)">Telegram Comment</label> 
+              <input class="colg-25 pd-l-m" type="text" 
+                     name="TELEGRAM_COMMENT" id="TELEGRAM_COMMENT" 
+                     value="<%= dataSettings?.TELEGRAM_COMMENT ?? '' %>"
+                     placeholder="TELEGRAM_COMMENT ">
+            </div> -->
+    
+            <!-- 
+            *******************************************************
+            *******************************************************
+            *******************************************************
+            ******************** แก้ไขไม่ได้  *********************
+            *******************************************************
+            *******************************************************
+            *******************************************************
+            -->
+    
+            <!-- 
+            <hr style="border:1px dashed gray;" class="mg-xxl">
+            <div class="rowg">
+              <label class="colg-12 lh-tb"></label> 
+              <p class="colg-25 fc-orange lh-tb">
+                <i class="fas fa-ban mg-r-m"></i>แก้ไขไม่ได้ มาจากระบบ
+              </p>
+            </div>
+    
+            <div class="rowg">
+              <label class="colg-12" title="ITEM_TYPE">* ชนิดอุปกรณ์</label> 
+              <input class="colg-25 vd pd-l-m" type="text" minlength="10" placeholder="ชนิดอุปกรณ์" 
+                     value=""
+                     required disabled
+                     name="ITEM_TYPE" id="ITEM_TYPE" >
+            </div> 
+    
+            <div class="rowg">
+              <label class="colg-12" title="ITEM_STATUS">* สถานะอุปกรณ์</label> 
+              <input class="colg-25 vd pd-l-m" type="text" minlength="10" placeholder="สถานะอุปกรณ์"
+                     value=""
+                     required disabled
+                     id="ITEM_STATUS" name="ITEM_STATUS" >
+            </div>
+    
+            <div class="rowg">
+              <label class="colg-12" title="PLACE_TO_USE">* สถานที่ใช้งาน</label> 
+              <input class="colg-25 vd pd-l-m" type="text" minlength="10" placeholder="สถานที่ใช้งาน"
+                     value=""
+                     required disabled
+                     id="PLACE_TO_USE" name="PLACE_TO_USE" >
+            </div> 
+            -->
+    
+            <!-- 
+            *******************************************************
+            *******************************************************
+            *******************************************************
+            ******************** เปิดใช้งานเมนุ  *********************
+            *******************************************************
+            *******************************************************
+            *******************************************************
+            -->
+    
+            <!-- <hr style="border:1px dashed gray;" class="mg-xxl"> -->
+            <div class="rowg">
+              <label class="colg-12 lh-tb"></label> 
+              <p class="colg-25 lh-tb">
+                <i class="fas fa-toggle-on mg-r-m"></i>เปิดใช้งานเมนู
+              </p>
+            </div>
+    
+            <!-- SETTINGS_SYSTEM -->
+            <div class="rowg">
+              <label class="colg-12"></label> 
+              <div class="colg-25 ">
+                <label class="cb-ctn al-l" title="SETTINGS_SYSTEM">
+                  <span>ตั้งค่าระบบครั้งแรก</span>
+                  <input type="checkbox" 
+                         id="SETTINGS_SYSTEM" name="SETTINGS_SYSTEM" 
+                         <%= dataSettings?.SETTINGS_SYSTEM == 'on' ? 'checked' : '' %> >
+                  <span style="left:1px" class="cb-checkmark"></span>
+                </label>
+              </div>
+            </div>
+    
+    
+            <!-- TERM_AND_CONDITION -->
+            <div class="rowg">
+              <label class="colg-12"></label> 
+              <div class="colg-25 ">
+                <label class="cb-ctn al-l" title="TERM_AND_CONDITION">
+                  <span>ข้อกำหนดและเงื่อนไข</span>
+                  <input type="checkbox" 
+                         name="TERM_AND_CONDITION" 
+                         <%= dataSettings?.TERM_AND_CONDITION === 'on' ? 'checked' : '' %> >
+                  <span style="left:1px" class="cb-checkmark"></span>
+                </label>
+              </div>
+            </div>             
+    
+    
+            <!-- 
+            *******************************************************
+            *******************************************************
+            *******************************************************
+            ************************** เฉพาะ O ********************
+            *******************************************************
+            *******************************************************
+            *******************************************************
+            -->
+    
+            <% if(['O','A'].includes(userAuthority)) { %>
+    
+            <hr style="border:1px dashed gray;" class="mg-xxl">
+    
+            <div class="rowg">
+              <label class="colg-12 lh-tb"></label> 
+              <p class="colg-25 lh-tb">เฉพาะ O</p class="fc-lime">
+            </div>
+    
+    
+            <!-- EMAIL_WHOSEND -->
+            <div class="rowg">
+              <label class="colg-12" title="EMAIL_WHOSEND">ชื่อสำหรับส่งอีเมล</label> 
+              <input class="colg-25 vd pd-l-m" type="text" minlength="5" 
+                      value="<%= dataSettings?.EMAIL_WHOSEND ?? '' %>"
+                      id="EMAIL_WHOSEND" name="EMAIL_WHOSEND" 
+                      required placeholder="ชื่อสำหรับส่งอีเมล">
+            </div>
+    
+            <!-- EMAIL_PASS -->
+            <div class="rowg">
+              <label class="colg-12" title="EMAIL_PASS">รหัสส่งอีเมลสำหรับแอปพลิเคชัน</label> 
+              <input class="colg-25 vd pd-l-m" type="text" minlength="5" 
+                      value="<%= dataSettings?.EMAIL_PASS ?? '' %>"
+                      id="EMAIL_PASS" name="EMAIL_PASS" 
+                      required placeholder="รหัสส่งอีเมลสำหรับแอปพลิเคชัน">
+            </div>
+    
+          </section>
+    
+          <% } %>    
+    
+          <!-- Buttons/Save -->
+          <section class="rowg mg-t-xxl <%= ['O','A'].includes(userAuthority) ? '' : 'dp-n' %>">
+            <label class="colg-12"></label>
+            <button class="colg-23 bg-save lh-label" type="submit">
+              <i class="fas fa-save"></i> Save
+            </button>
+          </section>
+    
+        </form>
+      </div>
+
+      <!-- #2 -->
+      <div id="tabcontent2" class="tabcontent">
+        <form id="formQuotation" autocomplete="off" 
+              action="<%= PATH_SAVE_QUOTATION %>" 
+              method="post"
+              enctype="multipart/form-data"
+              onsubmit="createSpinner()">
+    
+          <!-- #Tab 1 : General -->      
+          <section>    
+            
+            <!-- <hr style="border:1px dashed gray;" class="mg-xxl"> -->
+            <div class="rowg">
+              <label class="colg-12 lh-tb"></label> 
+              <p class="colg-25 lh-tb">ผู้ออกเอกสาร (หัวกระดาษ)</p>
+            </div> 
+    
+            <!--  -->
+            <div class="rowg">
+              <label class="colg-12" title="LOGO_PATH">อัปภาพโหลดโลโก้</label> 
+              <input class="colg-25 vd pd-l-m" type="file"
+                     accept=".png"
+                     title="ภาพโลโก้ ขนาด 200x220px รับเฉพาะ .png เท่านั้น"
+                     id="HEADER_QUOTATION_LOGO_FILE" name="HEADER_QUOTATION_LOGO_FILE">
+            </div>
+
+            <!-- -->
+            <div class="rowg">
+              <label class="colg-12" title="LOGO_PATH">ชื่อภาพโลโก้</label> 
+              <input class="colg-25 vd pd-l-m" type="text"
+                     placeholder=""
+                     value="<%= settingsQuotation?.HEADER_QUOTATION_IMAGE ?? '' %>"
+                     readonly  >
+            </div>
+
+            <!--  -->
+            <div class="rowg">
+              <label class="colg-12" title="HEADER_COMPANY_NAME">* ชื่อบริษัท</label> 
+              <input class="colg-25 vd pd-l-m" type="text" 
+                     placeholder="ชื่อบริษัท" 
+                     title="เช่น บริษัท ทดสอบ จำกัด"
+                     value="<%= settingsQuotation?.HEADER_COMPANY_NAME ?? '' %>"
+                     required
+                     name="HEADER_COMPANY_NAME" id="HEADER_COMPANY_NAME" >
+            </div> 
+    
+            <!--  -->
+            <div class="rowg">
+              <label class="colg-12" title="HEADER_LINE_2">* หัวกระดาษบรรทัดที่ 2</label> 
+              <input class="colg-25 vd pd-l-m" type="text"
+                     placeholder="หัวกระดาษบรรทัดที่ 2"
+                     title="เช่น 1234 ซอยทดสอบ ถนนทดสอบ แขวงทดสอบ เขตทดสอบ กรุงเทพฯ 10000 โทร./แฟกซ์ 0-2123-4567 มือถือ 08-1234-5678"
+                     value="<%= settingsQuotation?.HEADER_LINE_2 ?? '' %>"
+                     required 
+                     id="HEADER_LINE_2" name="HEADER_LINE_2" >
+            </div>
+    
+            <!--  -->
+            <div class="rowg">
+              <label class="colg-12" title="HEADER_LINE_3">* หัวกระดาษบรรทัดที่ 3</label> 
+              <input class="colg-25 vd pd-l-m" type="text"
+                     placeholder="หัวกระดาษบรรทัดที่ 3"
+                     title="เช่น เว็บ : wasankds.com, email : wasankds@gmail.com เลขประจำตัวผู้เสียภาษีอากร 0000000000000"
+                     value="<%= settingsQuotation?.HEADER_LINE_3 ?? '' %>"
+                     required 
+                     id="HEADER_LINE_3" name="HEADER_LINE_3" >
+            </div>
+
+            <!--  -->
+            <div class="rowg">
+              <label class="colg-12 lh-tb"></label> 
+              <p class="colg-25 lh-tb">
+                <!-- <i class="fas fa-paper-plane mg-r-m"></i> -->
+                หมายเหตุ
+              </p>
+            </div> 
+
+            <!--  -->
+            <div class="rowg">
+              <label class="colg-12 lh-tb" title="DOC_REMARK">หมายเหตุ (สูงสุด 9 บรรทัด)</label> 
+              <textarea class="colg-25 vd pd-m" rows="9" 
+                        title="สูงสุด 9บรรทัด"
+                        style="resize:none;overflow: hidden;"
+                        required
+                        id="DOC_REMARK" name="DOC_REMARK"
+                        placeholder="หมายเหตุท้ายกระดาษ"><%= settingsQuotation?.DOC_REMARK ?? '' %></textarea>
+            </div>
+    
+          </section>    
+    
+          <!-- Buttons/Save -->
+          <section class="rowg mg-t-xxl <%= ['O','A'].includes(userAuthority) ? '' : 'dp-n' %>">
+            <label class="colg-12"></label>
+            <button class="colg-23 bg-save lh-label" type="submit">
+              <i class="fas fa-save"></i> บันทึกการตั้งค่าใบเสนอราคา
+            </button>
+          </section>
+    
+        </form>
+      </div>
+
+      <!-- #3 -->
+      <div id="tabcontent3" class="tabcontent">
+                <form id="formInvoice" autocomplete="off" 
+              action="<%= PATH_SAVE_INVOICE %>" 
+              method="post"
+              enctype="multipart/form-data"
+              onsubmit="createSpinner()">
+    
+          <!-- #Tab 1 : General -->      
+          <section>    
+            
+            <div class="rowg">
+              <label class="colg-12 lh-tb"></label> 
+              <p class="colg-25 lh-tb">ผู้ออกเอกสาร (หัวกระดาษ)</p>
+            </div> 
+    
+            <!--  -->
+            <div class="rowg">
+              <label class="colg-12" title="LOGO_PATH">อัปภาพโหลดโลโก้</label> 
+              <input class="colg-25 vd pd-l-m" type="file"
+                     accept=".png"
+                     title="ภาพโลโก้ ขนาด 200x220px รับเฉพาะ .png เท่านั้น"
+                     id="HEADER_INVOICE_LOGO_FILE" name="HEADER_INVOICE_LOGO_FILE">
+            </div>
+
+            <!-- -->
+            <div class="rowg">
+              <label class="colg-12" title="LOGO_PATH">ชื่อภาพโลโก้</label> 
+              <input class="colg-25 vd pd-l-m" type="text"
+                     placeholder=""
+                     value="<%= settingsInvoice?.HEADER_INVOICE_IMAGE ?? '' %>"
+                     readonly  >
+            </div>
+
+            <!--  -->
+            <div class="rowg">
+              <label class="colg-12" title="HEADER_COMPANY_NAME">* ชื่อบริษัท</label> 
+              <input class="colg-25 vd pd-l-m" type="text" 
+                     placeholder="ชื่อบริษัท" 
+                     title="เช่น บริษัท ทดสอบ จำกัด"
+                     value="<%= settingsInvoice?.HEADER_COMPANY_NAME ?? '' %>"
+                     required
+                     name="HEADER_COMPANY_NAME" id="HEADER_COMPANY_NAME" >
+            </div> 
+    
+            <!--  -->
+            <div class="rowg">
+              <label class="colg-12" title="HEADER_LINE_2">* หัวกระดาษบรรทัดที่ 2</label> 
+              <input class="colg-25 vd pd-l-m" type="text"
+                     placeholder="หัวกระดาษบรรทัดที่ 2"
+                     title="เช่น 1234 ซอยทดสอบ ถนนทดสอบ แขวงทดสอบ เขตทดสอบ กรุงเทพฯ 10000 โทร./แฟกซ์ 0-2123-4567 มือถือ 08-1234-5678"
+                     value="<%= settingsInvoice?.HEADER_LINE_2 ?? '' %>"
+                     required 
+                     id="HEADER_LINE_2" name="HEADER_LINE_2" >
+            </div>
+    
+            <!--  -->
+            <div class="rowg">
+              <label class="colg-12" title="HEADER_LINE_3">* หัวกระดาษบรรทัดที่ 3</label> 
+              <input class="colg-25 vd pd-l-m" type="text"
+                     placeholder="หัวกระดาษบรรทัดที่ 3"
+                     title="เช่น เว็บ : wasankds.com, email : wasankds@gmail.com เลขประจำตัวผู้เสียภาษีอากร 0000000000000"
+                     value="<%= settingsInvoice?.HEADER_LINE_3 ?? '' %>"
+                     required 
+                     id="HEADER_LINE_3" name="HEADER_LINE_3" >
+            </div>
+
+            <!--  -->
+            <div class="rowg">
+              <label class="colg-12 lh-tb"></label> 
+              <p class="colg-25 lh-tb">
+                <!-- <i class="fas fa-paper-plane mg-r-m"></i> -->
+                หมายเหตุ
+              </p>
+            </div> 
+
+            <!--  -->
+            <div class="rowg">
+              <label class="colg-12 lh-tb" title="DOC_REMARK">หมายเหตุ (สูงสุด 9 บรรทัด)</label> 
+              <textarea class="colg-25 vd pd-m" rows="9" 
+                        title="สูงสุด 9บรรทัด"
+                        style="resize:none;overflow: hidden;"
+                        required
+                        id="DOC_REMARK" name="DOC_REMARK"
+                        placeholder="หมายเหตุท้ายกระดาษ"><%= settingsInvoice?.DOC_REMARK ?? '' %></textarea>
+            </div>
+    
+          </section>    
+    
+          <!-- Buttons/Save -->
+          <section class="rowg mg-t-xxl <%= ['O','A'].includes(userAuthority) ? '' : 'dp-n' %>">
+            <label class="colg-12"></label>
+            <button class="colg-23 bg-save lh-label" type="submit">
+              <i class="fas fa-save"></i> บันทึกการตั้งค่าใบแจ้งหนี้
+            </button>
+          </section>
+    
+        </form>
+        
+      
+      </div>
+      <!-- #4 -->
+      <div id="tabcontent4" class="tabcontent">4</div>
+      <!-- #5 -->
+      <!-- <div id="tabcontent5" class="tabcontent">5</div> -->
+
+    </section>
+
+    <!--  -->
+
+  </main>
+
+  <!--  -->
+  <%- include('partials/footer') %>
+
+  <script type="text/javascript">
+    const tabNumberClicked = `<%= tabNumberClicked %>`;
+  </script>
+  <!--  -->
+  <% if(!IS_PRODUCTION) { %>
+  <script type="text/javascript" src="/js/script_all.js?v=<%= time %>"></script>
+  <script type="text/javascript" src="/js/nav.js"></script>
+  <script type="text/javascript" src="/js/notify.js?v=<%= time %>"></script>
+  <script type="text/javascript" src="/js/manageSettings.js?v=<%= time %>"></script>
+  <% } else { %>
+  <script type="text/javascript" src="/js-min/manageSettings.obf.js?v=<%= time %>"></script>
+  <% }  %>
+</body>
+</html>
+
+
+
+
+<!-- 
+<section class="pd-l pd-b-xxl">
+  <div class="row <%= ['O','A'].includes(userAuthority) ? '' : 'dp-n' %>">
+    <label class="col-33"></label>
+    <div class="col-33 btn-group">
+      <input type="button" id="btnSave"  class="btn-show bg-save" value="Save"
+              onclick="onBtnClicked(this,'ON')">
+      <input type="submit" id="btnSaveConfirm" class="btn-confirm " value="Confirm">
+      <input type="button" id="btnSaveCancel"  class="btn-cancel " value="Cancel"
+              onclick="onBtnClicked(this,'CANCEL')">
+    </div>
+  </div>        
+</section> 
+-->
+

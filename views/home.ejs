@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('partials/meta',{ time:time}) %>
+  <title><%= title %></title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/cdn/fontawesome/css/all.min.css">
+  <% if(!IS_PRODUCTION) { %>
+  <link rel="stylesheet" href="/css/utils.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/fontsAnuphan.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/toast.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/nav.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/same.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/home.css?v=<%= time %>">
+  <% } else { %>
+  <link rel="stylesheet" href="/css-min/home.min.css?v=<%= time %>">
+  <% }  %>
+  <style>
+    a:link {  text-decoration: none; }
+    a:visited {  text-decoration: none; }
+    a:hover { filter: brightness(1.2); }
+    a:active {text-decoration: none; }
+  </style>
+</head>
+ 
+<body>
+
+  <%- include('partials/notify.ejs', {msg:msg}) %> 
+  <%- include('partials/nav.ejs') %>
+
+  <main>
+
+    <!--  -->
+    <section>
+      <div class="">
+        <h1 class="al-c">
+          <i class="fa-solid fa-house mg-r-l"></i> 
+          <span><%= dataSettings && dataSettings.COMPANY_NAME ? dataSettings.COMPANY_NAME : 'หน้าแรก' %></span>
+        </h1>
+      </div>
+    </section>
+
+    <!--  -->
+    <section class="row">
+
+      <div class="col-4 menu-blue">
+        <a href="/quotation" class="">
+          <div class="al-c">
+            <i class="fa-solid fa-file-signature fa-3x  mg-l-xl"></i>
+            <h3 class="mg-t-l"><%= PAGE_QUOTATION %></h3>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-4 menu-orange">
+        <a href="/invoice" class="">
+          <div class="al-c">
+            <i class="fa-solid fas fa-file-invoice-dollar fa-3x"></i>
+            <h3 class="mg-t-l"><%= PAGE_INVOICE %></h3>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-4 menu-green">
+        <a href="/receipt" class="">
+          <div class="al-c">
+            <i class="fa-solid fa-receipt fa-3x"></i>
+            <h3 class=" mg-t-l"><%= PAGE_RECEIPT %></h3>
+          </div>
+        </a>
+      </div>
+      
+      <div class="col-4 menu-pink">
+        <a href="/bill" class="">
+          <div class="al-c">
+            <i class="fa-solid fa-money-bill fa-3x"></i>
+            <h3 class=" mg-t-l"><%= PAGE_BILL %></h3>
+          </div>
+        </a>
+      </div>
+
+    </section>
+
+    <!--  -->
+    <!-- <section class="row">
+      <div class="col-f">
+        <h1 class="al-c">
+          <i class="fa-solid fa-chart-bar mg-r-l"></i> 
+          <span>รายงาน</span>
+        </h1>
+      </div>
+    </section> -->
+
+    <!--  -->
+    <section class="row">
+
+      <div class="col-4 menu-blue">
+        <a href="/report/quotation" class="">
+          <div class="al-c">
+            <i class="fa-solid fa-file-signature fa-2x mg-l-xl"></i>
+            <p class="mg-t-l fc-gray fs-m">รายงาน</p>
+            <h3 class=""><%= PAGE_QUOTATION %></h3>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-4 menu-orange">
+        <a href="/report/invoice" class="">
+          <div class="al-c">
+            <i class="fa-solid fas fa-file-invoice-dollar fa-2x"></i>
+            <p class="mg-t-l fc-gray fs-m">รายงาน</p>
+            <h3 class=""><%= PAGE_INVOICE %></h3>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-4 menu-green">
+        <a href="/report/receipt" class="">
+          <div class="al-c">
+            <i class="fa-solid fa-receipt fa-2x"></i>
+            <p class="mg-t-l fc-gray fs-m">รายงาน</p>
+            <h3 class=""><%= PAGE_RECEIPT %></h3>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-4 menu-pink">
+        <a href="/report/bill" class="">
+          <div class="al-c">
+            <i class="fa-solid fa-money-bill fa-2x"></i>
+            <p class="mg-t-l fc-gray fs-m">รายงาน</p>
+            <h3 class=""><%= PAGE_BILL %></h3>
+          </div>
+        </a>
+      </div>
+
+    </section>
+
+
+    <!--  -->
+    <!-- <section class="row">
+      <div class="col-f">
+        <h1 class="al-c">
+          <i class="fa-solid fa-database mg-r-l"></i> 
+          <span>เอนทิตี</span>
+        </h1>
+      </div>
+    </section> -->
+
+    <!--  -->
+    <section class="row">
+
+      <div class="col-3 menu-silver">
+        <a href="/items" class="">
+          <div class="al-c">
+            <i class="fa-solid fa-box fa-3x"></i>
+            <h3 class=" mg-t-l">ไอเท็ม</h3>
+          </div>
+        </a>
+      </div>
+      
+      <div class="col-3 menu-silver">
+        <a href="/items-categories" class="">
+          <div class="al-c">
+            <i class="fa-solid fa-layer-group fa-3x"></i>
+            <h3 class=" mg-t-l">หมวดหมู่ไอเท็ม</h3>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-3 menu-silver">
+        <a href="/items" class="">
+          <div class="al-c ">
+            <i class="fa-solid fa-users fa-3x"></i>
+            <h3 class=" mg-t-l">ลูกค้า</h3>
+          </div>
+        </a>
+      </div>     
+
+    </section>
+
+
+    <!--  -->
+    <!-- <section class="row">
+      <div class="col-f">
+        <h1 class="al-c">
+          <i class="fa-solid fa-cog mg-r-l"></i> 
+          <span>ตั้งค่าระบบ</span>
+        </h1>
+      </div>
+    </section> -->
+
+    <!--  -->
+    <section class="row">
+
+      <div class="col-3 menu-silver">
+        <a href="/manage/users" class="">
+          <div class="al-c">
+            <i class="fa-solid fa-users-cog fa-3x"></i>
+            <h3 class=" mg-t-l">จัดการผู้ใช้งาน</h3>
+          </div>
+        </a>
+      </div>
+      
+      <div class="col-3 menu-silver">
+        <a href="/manage/settings" class="">
+          <div class="al-c">
+            <i class="fa-solid fa-sliders-h  fa-3x"></i>
+            <h3 class=" mg-t-l">ตั้งค่า</h3>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-3 menu-silver">
+        <a href="/manage/sessions" class="">
+          <div class="al-c ">
+            <i class="fa-solid fa-user-clock fa-3x"></i>
+            <h3 class=" mg-t-l">จัดการเซสชั่น</h3>
+          </div>
+        </a>
+      </div>     
+
+    </section>
+
+
+  </main>  
+
+
+  <!--  -->
+  <%- include('partials/footer') %>
+
+  <!--  -->
+  <% if(!IS_PRODUCTION) { %>
+  <script type="text/javascript" src="/js/script_all.js?v=<%= time %>"></script>
+  <script type="text/javascript" src="/js/nav.js"></script>
+  <script type="text/javascript" src="/js/notify.js?v=<%= time %>"></script>
+  <% } else { %>
+  <script type="text/javascript" src="/js-min/home.obf.js?v=<%= time %>"></script>
+  <% }  %>
+
+</body>
+</html>
+
+
+
+

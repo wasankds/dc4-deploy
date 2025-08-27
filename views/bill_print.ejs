@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <title><%= title %></title>
+  <% if(!IS_PRODUCTION) { %>
+  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/utils.css?v=<%= time %>">
+  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/flex.css?v=<%= time %>">
+  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/same.css?v=<%= time %>"> 
+  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/receipt.css?v=<%= time %>"> 
+  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/same_print.css?v=<%= time %>"> 
+  <% } else { %>
+  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css-min/receiptPrint.min.css?v=<%= time %>">
+  <% }  %>
+</head>
+<body>
+
+  <%
+    var watermarkClass = doc.docStatusNumber !== 2 ? 'watermark' : '';
+  %>
+
+  <!-- MAIN CONTAINER -->
+  <main class="<%= watermarkClass %>">
+
+    <!-- PAPER FORM -->
+    <form id="paperForm" class="mg-b-xxl">
+
+      <section class="paper-ctn" id="paperCtn">
+
+        <!-- #1 : Header  -->
+        <!-- #2 : Title ใบเสนอราคา  -->
+        <%- include('print_headerZone.ejs', { isBillDoc:true }) %>
+          
+        <!-- #3 : ข้อมูลลูกค้า -->
+        <%- include('print_customerZone.ejs', { isBillDoc:true }) %>
+
+        <!-- #4 -->
+        <%- include('print_tableZone.ejs',{ isBillDoc:true }) %>
+
+        <!-- #5 : โซนล่าง (แต่ละเอกสารไม่เหมือนกัน) -->
+        <div class="row justify-content-between" id="bottomZoneCtn">
+
+          <!--  #5-1 -->
+          <div class="col-40"></div>
+          <!--  #5-2 -->
+          <div class="col-30"></div>
+
+          <!--  -->
+          <div class="col-30 pd-m">
+            <p class="fs-m lh-m al-c">ผู้จัดทำเอกสาร</p>
+            <div id="proposerImageSignatureCtn">
+              <% if(doc.proposerImageSign && doc.selectProposerSignature == '1') { %>
+              <img id="proposerImageSignature" src="<%- doc.proposerImageSign ? doc.proposerImageSign : '' %>" >
+              <% } %>
+            </div>
+            <div class="al-c">
+              <div class="col-100 d-flex justify-content-between bt-k-d">
+                <span class="mg-t-m">(</span>
+                <span class="w-100 mg-t-m">
+                  <input class="al-c fw-b" type="text" 
+                         id="proposerFullname" name="proposerFullname" tabindex="-1"
+                         readonly
+                         value="<%= userFullname ? userFullname : '' %>">
+                </span>
+                <span class="mg-t-m">)</span>
+              </div>
+            </div>
+          </div>
+          
+        </div>   <!-- 5 -->  
+        
+        
+      </section><!-- paper ctn -->
+    </form>
+
+    
+  </main>
+
+  <!--  -->
+  <% if(action == 'print') { %>
+    <%- include('partials/print_footer.ejs') %>
+  <% } %>
+  <script src="<%= global.DOMAIN_ALLOW %>/js/print_adjust.js"></script>
+
+</body>
+</html>
+

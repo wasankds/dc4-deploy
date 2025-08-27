@@ -1,0 +1,46 @@
+{
+  "type": "module",
+  "name": "dc4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dc4.js",
+  "scripts": {
+    "1": "node min_css_js.js",
+    "2": "node delete_min_js.js",
+    "3": "node min_routes.js",
+    "4": "node create_folders.js",
+
+    "dev": "nodemon dc4.js",
+    "app": "node dc4.js",
+    "kill": "taskkill /f /im node.exe",
+    "start": "pm2 start dc4.js -i 0",
+    "restart": "pm2 restart dc4.js",
+    "delete": "pm2 delete dc4.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    
+    "clear_db": "node clear_db.js",
+    "insert_data2db": "node insert_data2db.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.8.4",
+    "bcrypt": "^5.1.1",
+    "connect-flash": "^0.1.1",
+    "connect-mongodb-session": "^5.0.0",
+    "cookie-parser": "^1.4.7",
+    "ejs": "^3.1.10",
+    "esbuild": "^0.25.5",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "javascript-obfuscator": "^4.1.1",
+    "luxon": "^3.5.0",
+    "mongodb": "^6.3.0",
+    "multer": "^2.0.0",
+    "nodemailer": "^6.10.1",
+    "puppeteer": "^24.16.2",
+    "request": "^2.88.2",
+    "xlsx": "^0.18.5"
+  }
+}

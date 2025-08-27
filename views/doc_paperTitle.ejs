@@ -1,0 +1,49 @@
+
+<%
+  const docBill_Class = !isBillDoc ? '' : 'doc-bill'
+%>
+
+<div class="pd-t-xl pd-b-s" id="docTitleCtn">
+
+  <!-- ค้นลูกค้า -->
+  <div class="row <%= docBill_Class %>" id="searchCustomerCtn">
+
+    <!-- ล้างข้อมูลลูกค้า -->
+    <button class="col-15 <%= docBill_Class %>" title="ล้างข้อมูลลูกค้า และพิมพ์รายละเอียดลูกค้าเอง" 
+            id="btnClearCustomer" >
+      <i class="fa fa-broom"></i>
+    </button>
+
+    <!-- โมดัล -->
+    <div class="col-85 modalCtn">
+      <input class="al-c pd-l-m w-100 h-100 <%= docBill_Class %>" type="text" autocomplete="off"
+              id="searchCustomers" tabindex="-1"
+              style="min-width: 200px;"
+              placeholder="เลือกลูกค้า" 
+              onfocus="popModalCustomers(event)" 
+              oninput="popModalCustomers(event)" >
+      <div class="modal">
+        <div class="modal-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Title -->
+  <% if(!isBillDoc) { %>
+    <p class="al-c fw-b fs-xl">
+      <span id="docTitle" class="fw-b"><%= title %></span>
+    </p> 
+  <% } else { %>
+    <!-- บิลเงินสดเท่านั้น -->
+    <h2 class="al-c fs-xxl ba-k bdr5 pd-t-xl pd-b-xl">
+      <span class="fw-b" id="docTitle"><%= title %></span>
+    </h2>
+  <% }  %>
+
+  <!-- สถานะเอกสาร -->
+  <input class="ba-d al-c no-arrow <%= docBill_Class %>" type="number" 
+         readonly
+         name="docStatusNumber" id="docStatusNumber" 
+         title="<%= global.DOC_STATUS_TITLE %>"
+         placeholder="สถานะเอกสาร">
+  </div>

@@ -1,0 +1,198 @@
+<%
+  var docId = doc.docId ? doc.docId : '';
+  //=== สำหรับใช้ในตาราง
+  const col_1 = 'col-05'
+  const col_2 = 'col-54'
+  const col_3 = 'col-07'
+  const col_4 = 'col-08'
+  const col_5 = 'col-12'
+  const col_6 = 'col-14'
+
+  // 1.) หน้าเดี่ยวได้ 24 บรรทัด
+  // 2.) 2 หน้าได้ 35(หน้าแรก)+35(หน้าสุดท้าย) = 70 บรรทัด 
+  // 3.) 3 หน้าได้ 35(หน้าแรก)+40(กลาง)+35(หน้าสุดท้าย) = 110 บรรทัด
+  // 4.) 4 หน้าได้ 35(หน้าแรก)+40*2(กลาง)+35(หน้าสุดท้าย) = 150 บรรทัด
+
+  const rowPage1 = 24  // มีหน้าเดียว
+  const rowPage2 = 70  // 35+35  - 2 หน้า   
+  const rowPage3 = 110 // 35+40+35 - 3 หน้า
+  const rowPage4 = 150 // 35+40*2+35 - 4 หน้า
+
+  const page1cut = 35  // ตัดหน้าที่แถง 
+  const page2cut = 40*2
+  const page3cut = 40*3
+
+%>
+
+<!-- #1 หัวตาราง : ทำเป็นตัวแปรสำหรับใช้ซ้ำ -->
+<% 
+  var tableHeader = `
+  <div class="row" style="position: relative;">
+    <label class="${col_1} lh-xs al-c bt-k bb-k bl-k pd-t-s pd-b-s"><span class="fs-sm">ลำดับ</span></label>
+    <label class="${col_2} lh-xs al-c bt-k bb-k bl-k pd-t-s pd-b-s"><span class="fs-sm">รายการ</span></label>
+    <label class="${col_3} lh-xs al-c bt-k bb-k bl-k pd-t-s pd-b-s"><span class="fs-sm">จำนวน</span></label>
+    <label class="${col_4} lh-xs al-c bt-k bb-k bl-k pd-t-s pd-b-s"><span class="fs-sm">หน่วย</span></label>
+    <label class="${col_5} lh-xs al-c bt-k bb-k bl-k pd-t-s pd-b-s"><span class="fs-sm">ราคา</span></label>
+    <label class="${col_6} lh-xs al-c bt-k bb-k bl-k pd-t-s pd-b-s br-k"><span class="fs-m">รวม</span></label>  
+  </div>` 
+
+  var blankRow = `
+    <div class="row bb-k">
+      <input class="${col_1} al-c lh-xs bl-k" type="text" value="">
+      <input class="${col_2} al-l lh-xs bl-k pd-l-s" type="text" value="">
+      <input class="${col_3} al-c lh-xs bl-k pd-r-s" type="text" value="">
+      <input class="${col_4} al-c lh-xs bl-k" type="text" value="">
+      <input class="${col_5} al-r lh-xs bl-k pd-r-s" type="text" value="">
+      <input class="${col_6} al-r lh-xs bl-k pd-r-s br-k" type="text" value="">
+    </div>`;
+%>
+
+
+<!-- #4 -->
+<div id="tableListCtn" style="position: relative;">
+
+  <!-- เลขหน้า -->
+  <!-- ตรวจสอบเลขตัดหน้าใหม่ -->
+  <% var tableRowsNum = doc.tableRows.length %>
+  <% 
+    let pageNum = 1
+    if      (tableRowsNum > 0        && tableRowsNum <= rowPage1) { pageNum = 1 }
+    else if (tableRowsNum > rowPage1 && tableRowsNum <= rowPage2) { pageNum = 2 }
+    else if (tableRowsNum > rowPage2 && tableRowsNum <= rowPage3) { pageNum = 3 }
+    else if (tableRowsNum > rowPage3 && tableRowsNum <= rowPage4) { pageNum = 4 }
+  %>
+  <% if(pageNum > 1) { %>
+  <p class="fs-s" style="position: absolute; top:-20px; right: 0;">หน้า 1/<%= pageNum %></p>
+  <% } %>
+
+  <!-- หัวตารางหน้าแรก -->
+  <%- tableHeader %>
+  
+  <!-- รายการ -->
+  <div>
+  
+  <!-- 1หน้า -->
+  <% if(tableRowsNum > 0 && tableRowsNum <= rowPage1) { %>
+    <% doc.tableRows.forEach( obj => { %>
+      <div class="row bb-k">
+        <input class="<%= col_1 %> al-c lh-xs bl-k" type="text" value="<%= obj.no %>">
+        <input class="<%= col_2 %> al-l lh-xs bl-k pd-l-s" type="text" value="<%= obj.description %>">
+        <input class="<%= col_3 %> al-c lh-xs bl-k pd-r-s" type="text" value="<%= obj.quantity %>">
+        <input class="<%= col_4 %> al-c lh-xs bl-k" type="text" value="<%= obj.unit %>">
+        <input class="<%= col_5 %> al-r lh-xs bl-k pd-r-s" type="text" value="<%= obj.price %>">
+        <input class="<%= col_6 %> al-r lh-xs bl-k pd-r-s br-k" type="text" value="<%= obj.amount %>">
+      </div>
+    <% }) %>
+    <!-- เติ่มแถวว่่างให้หน้า1 -->
+    <% for(let i = 0; i < (rowPage1 - tableRowsNum); i++) { %>
+      <%- blankRow %>  
+    <% } %>
+
+  <!-- 2หน้า -->
+  <% }else if(tableRowsNum > rowPage1 && tableRowsNum <= rowPage2) { %>
+    <% for(let i = 0; i < tableRowsNum; i++) { %>
+      <%- i == page1cut ? `<div class="page-break-before fs-s al-r"><span class="pd-r-l">[${docId}]</span>หน้า 2/2<div>` : '' %>
+      <%- i == page1cut ? tableHeader : '' %>  <!-- ซ้ำหัวตาราง  -->
+      <div class="row bb-k">
+        <input class="<%= col_1 %> al-c lh-xs bl-k" type="text" value="<%= doc.tableRows[i].no %>">
+        <input class="<%= col_2 %> al-l lh-xs bl-k pd-l-s" type="text" value="<%= doc.tableRows[i].description %>">
+        <input class="<%= col_3 %> al-c lh-xs bl-k pd-r-s" type="text" value="<%= doc.tableRows[i].quantity %>">
+        <input class="<%= col_4 %> al-c lh-xs bl-k" type="text" value="<%= doc.tableRows[i].unit %>">
+        <input class="<%= col_5 %> al-r lh-xs bl-k pd-r-s" type="text" value="<%= doc.tableRows[i].price %>">
+        <input class="<%= col_6 %> al-r lh-xs bl-k pd-r-s br-k" type="text" value="<%= doc.tableRows[i].amount %>">
+      </div>
+    <% } %>
+    <!-- เติ่มแถวว่่างให้หน้า2 -->
+    <% const blankLoopNum = rowPage2 - tableRowsNum  %>
+    <% for(let i = 0; i < blankLoopNum; i++) { %><%- blankRow %><% } %>
+
+  <!-- 3หน้า -->
+  <% }else if(tableRowsNum > rowPage2 && tableRowsNum <= rowPage3) { %>
+    <% doc.tableRows.forEach( (obj,i) => { %>
+      <%- i == page1cut ? `<div class="page-break-before fs-s al-r"><span class="pd-r-l">[${docId}]</span>หน้า 2/3<div>` : '' %>
+      <%- i == page2cut ? `<div class="page-break-before fs-s al-r"><span class="pd-r-l">[${docId}]</span>หน้า 3/3<div>` : '' %>
+      <%- i == page1cut ? tableHeader : '' %>  <!-- ซ้ำหัวตาราง  -->
+      <%- i == page2cut ? tableHeader : '' %>  <!-- ซ้ำหัวตาราง  -->
+      <div class="row bb-k">
+        <input class="<%= col_1 %> al-c lh-xs bl-k" type="text" value="<%= obj.no %>">
+        <input class="<%= col_2 %> al-l lh-xs bl-k pd-l-s" type="text" value="<%= obj.description %> - <%= i %>/<%= tableRowsNum %>">
+        <input class="<%= col_3 %> al-c lh-xs bl-k pd-r-s" type="text" value="<%= obj.quantity %>">
+        <input class="<%= col_4 %> al-c lh-xs bl-k" type="text" value="<%= obj.unit %>">
+        <input class="<%= col_5 %> al-r lh-xs bl-k pd-r-s" type="text" value="<%= obj.price %>">
+        <input class="<%= col_6 %> al-r lh-xs bl-k pd-r-s br-k" type="text" value="<%= obj.amount %>">
+      </div>
+    <% }) %>
+    <!-- เติ่มแถวว่่างให้หน้า3 -->
+    <% const blankLoopNum = rowPage3 - tableRowsNum  %>
+    <% for(let i = 0; i < blankLoopNum; i++) { %><%- blankRow %><% } %>
+
+  <!-- 4หน้า -->
+  <% }else if(tableRowsNum > rowPage3 && tableRowsNum <= rowPage4) { %>
+    <% doc.tableRows.forEach( (obj,i) => { %>
+      <%- i == page1cut ? `<div class="page-break-before fs-s al-r"><span class="pd-r-l">[${docId}]</span>หน้า 2/4<div>` : '' %>
+      <%- i == page2cut ? `<div class="page-break-before fs-s al-r"><span class="pd-r-l">[${docId}]</span>หน้า 3/4<div>` : '' %>
+      <%- i == page3cut ? `<div class="page-break-before fs-s al-r"><span class="pd-r-l">[${docId}]</span>หน้า 4/4<div>` : '' %>
+      <%- i == page1cut ? tableHeader : '' %>  <!-- ซ้ำหัวตาราง  -->
+      <%- i == page2cut ? tableHeader : '' %>  <!-- ซ้ำหัวตาราง  -->
+      <%- i == page3cut ? tableHeader : '' %>  <!-- ซ้ำหัวตาราง  -->
+      <div class="row bb-k">
+        <input class="<%= col_1 %> al-c lh-xs bl-k" type="text" value="<%= obj.no %>">
+        <input class="<%= col_2 %> al-l lh-xs bl-k pd-l-s" type="text" value="<%= obj.description %> - <%= i %>/<%= tableRowsNum %>">
+        <input class="<%= col_3 %> al-c lh-xs bl-k pd-r-s" type="text" value="<%= obj.quantity %>">
+        <input class="<%= col_4 %> al-c lh-xs bl-k" type="text" value="<%= obj.unit %>">
+        <input class="<%= col_5 %> al-r lh-xs bl-k pd-r-s" type="text" value="<%= obj.price %>">
+        <input class="<%= col_6 %> al-r lh-xs bl-k pd-r-s br-k" type="text" value="<%= obj.amount %>">
+      </div>
+    <% }) %>
+    <!-- เติ่มแถวว่่างให้หน้า4 -->
+    <% const blankLoopNum = rowPage4 - tableRowsNum  %>
+    <% for(let i = 0; i < blankLoopNum; i++) { %><%- blankRow %><% } %>
+  <% } %>
+  </div>
+
+
+
+
+  <!-- 3 - โซนผลรวม -->
+  <div class="row" id="mainTotalCtn">
+
+    <!-- total co#l1 -->
+    <div class="col-70" id="docRemarkCtn">
+      <textarea class="w-100 h-100" id="docRemark"><%= doc.docRemark %></textarea>
+    </div>
+
+    <!-- total co#l2 -->
+    <div class="col-30" id="columnTotalCtn">
+
+      <% 
+        // สำหรับเลือกขีดเส้นใต้ 
+        const underliningTotal = !isBillDoc ? 'bb-k' : '' ;
+        const underliningTotal2 = !isBillDoc ? '' : 'bb-k-db' ;
+      %>
+
+      <!-- แถวรวม : Total Amount -->
+      <div class="row <%= underliningTotal %>" id="totalCtn">
+        <p class="col-53">รวม</p>
+        <input class="col-47 <%= underliningTotal2 %>" type="text" value="<%= doc.totalAmount %>" readonly>
+      </div>
+
+      <% if(!isBillDoc) { %>
+      <!-- แถว VAT -->
+      <div class="row bb-k" id="totalVatCtn">
+        <p class="col-53">ภาษีมูลค่าเพิ่ม 7%</p>
+        <input class="col-47" type="text" value="<%= doc.vatAmount %>" readonly>
+      </div>
+
+      <!-- แถว Net Amount -->
+      <div class="row bb-k-db" id="netCtn">
+        <p class="col-53">รวมทั้งสิ้น</p>
+        <input class="col-47" type="text" value="<%= doc.netAmount %>" readonly>
+      </div>
+      <% } %>
+
+    </div> <!-- total co#l2 -->
+
+  </div>
+
+</div>
+
