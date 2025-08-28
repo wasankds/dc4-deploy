@@ -89,7 +89,11 @@
     <%- include('partials/print_footer.ejs') %>
   <% } %>
   <!--  -->
+  <% if(!IS_PRODUCTION) { %>
   <script src="<%= global.DOMAIN_ALLOW %>/js/print_adjust.js"></script>
+  <% } else { %>
+  <script src="<%= global.DOMAIN_ALLOW %>/js-min/quotationPrint.obf.js"></script>
+  <% }  %>
 
 </body>
 </html>

@@ -5,10 +5,10 @@
   <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/utils.css?v=<%= time %>">
   <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/flex.css?v=<%= time %>">
   <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/same.css?v=<%= time %>"> 
-  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/receipt.css?v=<%= time %>"> 
+  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/bill.css?v=<%= time %>"> 
   <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/same_print.css?v=<%= time %>"> 
   <% } else { %>
-  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css-min/receiptPrint.min.css?v=<%= time %>">
+  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css-min/billPrint.min.css?v=<%= time %>">
   <% }  %>
 </head>
 <body>
@@ -78,7 +78,12 @@
   <% if(action == 'print') { %>
     <%- include('partials/print_footer.ejs') %>
   <% } %>
+
+  <% if(!IS_PRODUCTION) { %>
   <script src="<%= global.DOMAIN_ALLOW %>/js/print_adjust.js"></script>
+  <% } else { %>
+  <script src="<%= global.DOMAIN_ALLOW %>/js-min/billPrint.obf.js"></script>
+  <% }  %>
 
 </body>
 </html>
