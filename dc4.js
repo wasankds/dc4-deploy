@@ -16,8 +16,8 @@ async function loadSettingSystemStart() {
   return findSettingSystem ? findSettingSystem  : SYSTEM_START
 }
 global.PROJECT_DIR = process.cwd()
-// global.IS_PRODUCTION = false 
-global.IS_PRODUCTION = true
+global.IS_PRODUCTION = false 
+// global.IS_PRODUCTION = true
 global.SETTINGS_SYSTEM = await loadSettingSystemStart()
 const PORT = SETTINGS_SYSTEM.DEPLOY == 0 ? SETTINGS_SYSTEM.PORT_DEV : SETTINGS_SYSTEM.PORT_SERVER
 global.DOMAIN_ALLOW = SETTINGS_SYSTEM.DEPLOY == 0 ? `${SETTINGS_SYSTEM.LOCALHOST_ALLOW}:${PORT}` : `${SETTINGS_SYSTEM.DOMAIN_ALLOW}`
