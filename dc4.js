@@ -8,7 +8,7 @@ import MongoDBSession from 'connect-mongodb-session'
 import './mymodule/myGlobal.js'
 global.dbName = process.env.DB_NAME
 global.dbUrl = process.env.DB_URL
-global.IS_PRODUCTION = process.env.DEPLOY == 1 ? true : false
+global.IS_PRODUCTION = process.env.IS_PRODUCTION == 1 ? true : false
 global.PROJECT_DIR = process.cwd()
 const app = express()
 async function loadSettingSystemStart() {
