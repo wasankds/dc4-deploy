@@ -1,4 +1,4 @@
-// import 'dotenv/config' // ยกเลิก
+import 'dotenv/config' // ยกเลิก
 import express from 'express'
 import session from 'express-session'
 import cookieParser from 'cookie-parser'
@@ -6,6 +6,10 @@ import flash from 'connect-flash'
 import { MongoClient } from 'mongodb'
 import MongoDBSession from 'connect-mongodb-session' 
 import './mymodule/myGlobal.js'
+global.dbName = process.env.DB_NAME
+global.dbUrl = process.env.DB_URL
+global.IS_PRODUCTION = process.env.DEPLOY == 1 ? true : false
+global.PROJECT_DIR = process.cwd()
 const app = express()
 async function loadSettingSystemStart() {
   const client = new MongoClient(dbUrl)
@@ -15,9 +19,6 @@ async function loadSettingSystemStart() {
   await client.close()
   return findSettingSystem ? findSettingSystem  : SYSTEM_START
 }
-global.PROJECT_DIR = process.cwd()
-// global.IS_PRODUCTION = false 
-global.IS_PRODUCTION = true
 global.SETTINGS_SYSTEM = await loadSettingSystemStart()
 const PORT = SETTINGS_SYSTEM.DEPLOY == 0 ? SETTINGS_SYSTEM.PORT_DEV : SETTINGS_SYSTEM.PORT_SERVER
 global.DOMAIN_ALLOW = SETTINGS_SYSTEM.DEPLOY == 0 ? `${SETTINGS_SYSTEM.LOCALHOST_ALLOW}:${PORT}` : `${SETTINGS_SYSTEM.DOMAIN_ALLOW}`

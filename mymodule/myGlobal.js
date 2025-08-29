@@ -9,8 +9,8 @@ global.SYS_OWNER_FULLNAME = 'นายวสันต์ คุณดิลก�
 global.SYS_OWNER_EMAIL = 'wasankds@gmail.com'
 global.SYS_OWNER_PHONE = '081-459-8343'
 // Database 
-global.dbUrl = 'mongodb://localhost:27017'
-global.dbName = 'docsCreator'
+// global.dbUrl = 'mongodb://localhost:27017'
+// global.dbName = 'docsCreator' // ดึงจาก .dnv
 global.dbColl_settings = 'settings'
 global.dbColl_settings_Quotation = 'settings_Quotation'
 global.dbColl_settings_Invoice = 'settings_Invoice'

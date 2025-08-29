@@ -9,7 +9,6 @@
     "2": "node delete_min_js.js",
     "3": "node min_routes.js",
     "4": "node create_folders.js",
-
     "dev": "nodemon dc4.js",
     "app": "node dc4.js",
     "kill": "taskkill /f /im node.exe",
@@ -17,7 +16,6 @@
     "restart": "pm2 restart dc4.js",
     "delete": "pm2 delete dc4.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    
     "clear_db": "node clear_db.js",
     "insert_data2db": "node insert_data2db.js"
   },
@@ -30,6 +28,7 @@
     "connect-flash": "^0.1.1",
     "connect-mongodb-session": "^5.0.0",
     "cookie-parser": "^1.4.7",
+    "dotenv": "^17.2.1",
     "ejs": "^3.1.10",
     "esbuild": "^0.25.5",
     "express": "^4.21.2",
