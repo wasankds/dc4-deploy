@@ -113,42 +113,67 @@
 
     <hr class="mg-xl bb3">
 
-    <!-- FORM#2 : Restart -->
-    <!-- 
-    <% if(userAuthority == 'O') { %>
-    <section class="pd-l pd-b-xxl">
-    <div class="row">
-      <label class="col-33"></label>
-      <form class="col-33"  id="restartForm" class=" mt-1" autocomplete="off"
-            onsubmit="createSpinner()"
-            action="<%= PATH_RESTART_PM2 %>" method="post">
-            <div class="btn-group">
-              <input type="button" id="btnSave"  class="btn-show bg-clear lh-tb" value="Restart PM2"
-                      onclick="onBtnClicked(this,'ON')">
-              <input type="submit" id="btnSaveConfirm" class="btn-confirm  lh-tb" value="Confirm">
-              <input type="button" id="btnSaveCancel"  class="btn-cancel  lh-tb" value="Cancel"
-                    onclick="onBtnClicked(this,'CANCEL')">
-            </div>
-      </form>
-      </div>
-    </div>
-    </section> 
-    <% } %>
-    -->
+    <section class="mg-t-xl pd-b-xl">
+      <h1 class="al-c">
+        <i class="fas fa-server mg-r-m"></i> 
+        <span>จัดการระบบ</span>
+      </h1>
+    </section>
 
-    <!-- FORM#2 : backupForm -->
-    <form id="backupForm" class="mg-t-l al-c" autocomplete="off"
-          onsubmit="createSpinner()"
-          action="<%= PATH_BACKUP_DB %>" method="post">
-      <section class="d-flex justify-content-center">
-        <button type="button" class="btn bg-dkorange pd-l-l pd-r-l" id="btnBackupDb">
-          <i class="fas fa-database"></i> Backup Database
-        </button>
-        <button type="submit" class="btn bg-green pd-l-l pd-r-l dp-n" id="btnConfirmBackupDb">
-          <i class="fas fa-check-circle"></i> ยืนยัน
-        </button>
-      </section>
-    </form>
+    <section class="manageSystemCtn">
+
+      <div>
+        <p class="mg-b-m">สำรองข้อมูลฐานข้อมูล</p>
+        <form id="backupForm" class="al-c"
+              onsubmit="createSpinner()"
+              action="<%= PATH_BACKUP_DB %>" method="post">
+          <section class="d-flex">
+            <button type="button" class="btn bg-mediumseagreen" id="btnBackupDb">
+              <i class="fas fa-database"></i> Backup Database
+            </button>
+            <button type="submit" class="btn bg-green dp-n" id="btnConfirmBackupDb">
+              <i class="fas fa-check-circle"></i> ยืนยัน
+            </button>
+          </section>
+        </form>
+      </div>  
+
+      <div class="mg-t-xl">
+        <p class="mg-b-m">อัปเดทระบบจาก Git</p>
+        <form id="updateForm" class="al-c"
+              onsubmit="createSpinner()"
+              action="<%= PATH_UPDATE_SYSTEM %>" method="post">
+          <section class="d-flex">
+            <button type="button" class="btn bg-cornblue" id="btnUpdateSystem">
+              <i class="fas fa-sync"></i> Update System
+            </button>
+            <button type="submit" class="btn bg-green dp-n" id="btnConfirmUpdateSystem">
+              <i class="fas fa-check-circle"></i> ยืนยัน
+            </button>
+          </section>
+        </form>
+      </div>
+
+      <div class="mg-t-xl">
+        <p class="mg-b-m">เริ่มระบบใหม่</p>
+        <form id="restartForm" class="al-c" 
+              onsubmit="createSpinner()"
+              action="<%= PATH_RESTART_PM2 %>" method="post">
+          <section class="d-flex">
+            <button type="button" class="btn bg-dkorange" id="btnRestartPm2">
+              <i class="fas fa-redo"></i> Restart (PM2)
+            </button>
+            <button type="submit" class="btn bg-green dp-n" id="btnConfirmRestartPm2">
+              <i class="fas fa-check-circle"></i> ยืนยัน
+            </button>
+          </section>
+        </form>
+      </div>
+
+
+
+    </section>
+
 
 
   </main>
@@ -161,25 +186,10 @@
   <script type="text/javascript" src="/js/script_all.js?v=<%= time %>"></script>
   <script type="text/javascript" src="/js/nav.js"></script>
   <script type="text/javascript" src="/js/notify.js?v=<%= time %>"></script>
+  <script type="text/javascript" src="/js/manageSettingsSystem.js?v=<%= time %>"></script>
   <% } else { %>
   <script type="text/javascript" src="/js-min/manageSettingsSystem.obf.js?v=<%= time %>"></script>
   <% }  %>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-
-      //=== ปุ่ม Backup
-      var btnBackupDb = document.getElementById('btnBackupDb');
-      var btnConfirmBackupDb = document.getElementById('btnConfirmBackupDb');
-      if (btnBackupDb && btnConfirmBackupDb) {
-        btnBackupDb.addEventListener('click', function(e) {
-          e.preventDefault();
-          btnBackupDb.classList.add('dp-n');
-          btnConfirmBackupDb.classList.remove('dp-n');
-        });
-      }
-    });
-  </script>
 </body>
 </html>
 
