@@ -11,7 +11,7 @@ import { fileURLToPath } from 'url';
 // โฟลเดอร์ที่เก็บไฟล์ .js
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const folderNamesToCreate = ['items', 'docs', 'users'];
+const folderNamesToCreate = ['items', 'docs', 'users', 'backup'];
 
 // สร้างโฟลเดอร์ย่อย
 folderNamesToCreate.forEach(folderName => {

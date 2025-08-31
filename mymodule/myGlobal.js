@@ -8,9 +8,7 @@ global.SYS_VERSION = '2.0'
 global.SYS_OWNER_FULLNAME = 'นายวสันต์ คุณดิลกเศวต'
 global.SYS_OWNER_EMAIL = 'wasankds@gmail.com'
 global.SYS_OWNER_PHONE = '081-459-8343'
-// Database 
-// global.dbUrl = 'mongodb://localhost:27017'
-// global.dbName = 'docsCreator' // ดึงจาก .dnv
+// Database - dbUrl, dbName ดึงจาก .env 
 global.dbColl_settings = 'settings'
 global.dbColl_settings_Quotation = 'settings_Quotation'
 global.dbColl_settings_Invoice = 'settings_Invoice'
@@ -54,10 +52,12 @@ global.PAGE_REPORT_INVOICE = 'รายงานใบแจ้งหนี้'
 global.PAGE_REPORT_RECEIPT = 'รายงานใบเสร็จรับเงิน'
 global.PAGE_REPORT_BILL = 'รายงานบิลเงินสด'
 // ค่าคงที่
+// ทดสอบกับ tualeklek ใช้ 80 เท่านั้น - แก้ให้ตรงกับใช้งานจริง
+// ใช้งานจริงบน VPS แบบ Subdomain ให้สร้าง Subdomain ก่อน - ดูเรื่อง nginx 
 global.SYSTEM_START = {
-  PORT_SERVER: 80, // ทดสอบกับ tualeklek ใช้ 80 เท่านั้น - แก้ให้ตรงกับใช้งานจริง
-  PORT_DEV: 80,    // ทดสอบกับ tualeklek ใช้ 80 เท่านั้น - แก้ให้ตรงกับใช้งานจริง
-  DEPLOY: 1,       // 0 = dev, 1 = prod-ต้องเป็น 1 เลย ไม่เช่นนั้นเข้าจากโดเมนไม่ได้  
+  PORT_SERVER: 80, 
+  PORT_DEV: 80, 
+  DEPLOY: 1, // 0 = dev, 1 = prod-ต้องเป็น 1 เลย ไม่เช่นนั้นเข้าจากโดเมนไม่ได้  
   LOCALHOST_ALLOW: 'http://localhost',
   DOMAIN_ALLOW: 'https://tualeklek.com', 
 }

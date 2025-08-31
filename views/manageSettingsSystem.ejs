@@ -136,24 +136,19 @@
     <% } %>
     -->
 
-    <!-- FORM#2 : Restart -->
-    <!-- 
-    <form id="restartForm" class="my-form-dark mt-1" autocomplete="off"
+    <!-- FORM#2 : backupForm -->
+    <form id="backupForm" class="mg-t-l al-c" autocomplete="off"
           onsubmit="createSpinner()"
-          action="<%= PATH_RESTART_NODE %>" method="post">
-      <section class="card">
-        <h5 class="card-header d-flex justify-content-between ps-2 pe-0">
-          <div></div>
-          <button type="button" class="btn btn-warning me-2 w-20" id="btnRestartNode">
-            <i class="fas fa-sync-alt"></i> Restart NODE
-          </button>
-          <button type="submit" class="btn btn-danger me-2 w-20 d-none" id="btnConfirmRestartNode">
-            <i class="fas fa-exclamation-triangle"></i> Confirm
-          </button>
-          <div></div>
-        </h5>
+          action="<%= PATH_BACKUP_DB %>" method="post">
+      <section class="d-flex justify-content-center">
+        <button type="button" class="btn bg-dkorange pd-l-l pd-r-l" id="btnBackupDb">
+          <i class="fas fa-database"></i> Backup Database
+        </button>
+        <button type="submit" class="btn bg-green pd-l-l pd-r-l dp-n" id="btnConfirmBackupDb">
+          <i class="fas fa-check-circle"></i> ยืนยัน
+        </button>
       </section>
-    </form
+    </form>
 
 
   </main>
@@ -169,6 +164,22 @@
   <% } else { %>
   <script type="text/javascript" src="/js-min/manageSettingsSystem.obf.js?v=<%= time %>"></script>
   <% }  %>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+      //=== ปุ่ม Backup
+      var btnBackupDb = document.getElementById('btnBackupDb');
+      var btnConfirmBackupDb = document.getElementById('btnConfirmBackupDb');
+      if (btnBackupDb && btnConfirmBackupDb) {
+        btnBackupDb.addEventListener('click', function(e) {
+          e.preventDefault();
+          btnBackupDb.classList.add('dp-n');
+          btnConfirmBackupDb.classList.remove('dp-n');
+        });
+      }
+    });
+  </script>
 </body>
 </html>
 
