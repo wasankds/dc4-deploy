@@ -9,15 +9,19 @@
   <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"> -->
   <link rel="stylesheet" href="/cdn/fontawesome/css/all.min.css">
 
-  <% if(!IS_PRODUCTION) { %>
+  <!-- SweetAlert2 -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+  <script src="/cdn/sweetalert2.all.min.js"></script>
+
+  <% if(!global.IS_PRODUCTION) { %>
   <link rel="stylesheet" href="/css/utils.css?v=<%= time %>">
-  <link rel="stylesheet" href="/css/fontsAnuphan.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/fonts.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/alink.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/toast.css?v=<%= time %>">
-  <link rel="stylesheet" href="/css/flex.css?v=<%= time %>">
-  <link rel="stylesheet" href="/css/btngroup.css?v=<%= time %>">  
-  <link rel="stylesheet" href="/css/input.css?v=<%= time %>">  
+  <link rel="stylesheet" href="/css/footer.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/nav.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/flexNew.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/input.css?v=<%= time %>">  
   <link rel="stylesheet" href="/css/same.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/manageSettingsSystem.css?v=<%= time %>">
   <% } else { %>
@@ -29,151 +33,38 @@
   <%- include('partials/notify.ejs', {msg:msg}) %> 
   <%- include('partials/nav.ejs') %>
 
+  
+  <header class="header-title">
+    <p class="al-c fc-white">
+      <i class="fas fa-cog mg-r-l"></i> 
+      <span><%= title %></span>
+    </p>
+  </header>
+
   <main>
 
-    <section class="pd-b-xl">
-      <div class="pd-l">
-        <h1 class="al-c">
-          <i class="fas fa-cog mg-r-m"></i> 
-          <span><%= title %></span>
-        </h1>
-      </div>
-    </section>
 
-    <!--  -->
-    <form id="mainForm" autocomplete="off" 
-          action="<%= PATH_SAVE %>" 
-          method="post"
-          onsubmit="createSpinner()">
+    <!-- Tab links -->
+    <div class="tab">
+      <div class="tabMenu" id="tab1Menu" onclick="event.preventDefault();openMenu(this,'tabcontent1')">อิเมล์</div>
+      <!-- <div class="tabMenu" id="tab2Menu" onclick="event.preventDefault();openMenu(this,'tabcontent2')">ไอเท็ม</div> -->
+      <!-- <div class="tabMenu" id="tab1Menu" onclick="event.preventDefault();openMenu(this,'tabcontent1')">เซิร์ฟเวอร์</div> -->
+    </div>
 
-      <!-- #Tab 1 : General -->      
-      <section>
+    <!-- #1 -->
+    <div id="tabcontent1" class="tabcontent">
+      <%- include('partials/manageSettingsSystem_systemEmail.ejs' ) %>
+    </div>
 
-        <!-- DEPLOY -->
-        <div class="rowg">
-          <label class="colg-label mg-r-s" title="DEPLOY">DEPLOY</label> 
-          <select class="colg-2 pd-l-m" id="DEPLOY" name="DEPLOY">
-            <option value="0" <%= (data && data.DEPLOY == 0) ? 'selected' : '' %>>0 - Development</option>
-            <option value="1" <%= (data && data.DEPLOY == 1) ? 'selected' : '' %>>1 - Production</option>
-          </select>
+    <!-- #2 : ห้ามลบ  -->
+    <!-- <div id="tabcontent2" class="tabcontent">
+      <- include('partials/manageSettingsSystem_items.ejs' ) >
+    </div> -->
 
-          <!--  -->
-          <label class="colg-3 mg-r-s" title="PORT_SERVER">PORT_SERVER</label> 
-          <input class="colg-4 pd-l-m al-c" type="number" id="PORT_SERVER" 
-                 name="PORT_SERVER" id="PORT_SERVER" 
-                 value="<%= data?.PORT_SERVER ?? '' %>"
-                 placeholder="PORT_SERVER"
-                 <%= userAuthority != 'O' ? "readonly" : "" %> >
-
-          <!--  -->
-          <label class="colg-5 mg-r-s" title="PORT_DEV">PORT_DEV</label> 
-          <input class="colg-6 pd-l-m al-c" type="number" id="PORT_DEV" 
-                 name="PORT_DEV" id="PORT_DEV" 
-                 value="<%= data?.PORT_DEV ?? '' %>"
-                 placeholder="PORT_DEV"
-                 <%= userAuthority != 'O' ? "readonly" : "" %> >
-        </div> 
-
-        
-        <!-- LOCALHOST_ALLOW -->
-        <div class="rowg">
-          <label class="colg-label mg-r-s" title="LOCALHOST_ALLOW">LOCALHOST_ALLOW</label> 
-          <input class="colg-2-f pd-l-m" type="text" 
-                 name="LOCALHOST_ALLOW" id="LOCALHOST_ALLOW" 
-                 value="<%= data?.LOCALHOST_ALLOW ?? '' %>"
-                 placeholder="LOCALHOST_ALLOW">
-        </div>
-
-        <!-- DOMAIN_ALLOW -->
-        <div class="rowg">
-          <label class="colg-label mg-r-s" title="DOMAIN_ALLOW">DOMAIN_ALLOW</label> 
-          <input class="colg-2-f pd-l-m" type="text" 
-                 name="DOMAIN_ALLOW" id="DOMAIN_ALLOW" 
-                 value="<%= data?.DOMAIN_ALLOW ?? '' %>"
-                 placeholder="DOMAIN_ALLOW">
-        </div>
-
-      </section>
-
-      <!-- Buttons/Save -->
-      <section class="pd-l pd-b-xxl">
-        <div class="row <%= userAuthority != 'O' ? 'dp-n' : '' %>">
-          <label class="col-33"></label>
-          <div class="col-33 btn-group">
-            <input type="button" id="btnSave"  class="btn-show bg-save lh-label" value="Save"
-                   onclick="onBtnClicked(this,'ON')">
-            <input type="submit" id="btnSaveConfirm" class="btn-confirm lh-label" value="Confirm">
-            <input type="button" id="btnSaveCancel"  class="btn-cancel lh-label" value="Cancel"
-                   onclick="onBtnClicked(this,'CANCEL')">
-          </div>
-        </div>        
-      </section>
-
-    </form>
-
-    <hr class="mg-xl bb3">
-
-    <section class="mg-t-xl pd-b-xl">
-      <h1 class="al-c">
-        <i class="fas fa-server mg-r-m"></i> 
-        <span>จัดการระบบ</span>
-      </h1>
-    </section>
-
-    <section class="manageSystemCtn">
-
-      <div>
-        <p class="mg-b-m">สำรองข้อมูลฐานข้อมูล</p>
-        <form id="backupForm" class="al-c"
-              onsubmit="createSpinner()"
-              action="<%= PATH_BACKUP_DB %>" method="post">
-          <section class="d-flex">
-            <button type="button" class="btn bg-mediumseagreen" id="btnBackupDb">
-              <i class="fas fa-database"></i> Backup Database
-            </button>
-            <button type="submit" class="btn bg-green dp-n" id="btnConfirmBackupDb">
-              <i class="fas fa-check-circle"></i> ยืนยัน
-            </button>
-          </section>
-        </form>
-      </div>  
-
-      <div class="mg-t-xl">
-        <p class="mg-b-m">อัปเดทระบบจาก Git</p>
-        <form id="updateForm" class="al-c"
-              onsubmit="createSpinner()"
-              action="<%= PATH_UPDATE_SYSTEM %>" method="post">
-          <section class="d-flex">
-            <button type="button" class="btn bg-cornblue" id="btnUpdateSystem">
-              <i class="fas fa-sync"></i> Update System
-            </button>
-            <button type="submit" class="btn bg-green dp-n" id="btnConfirmUpdateSystem">
-              <i class="fas fa-check-circle"></i> ยืนยัน
-            </button>
-          </section>
-        </form>
-      </div>
-
-      <div class="mg-t-xl">
-        <p class="mg-b-m">เริ่มระบบใหม่</p>
-        <form id="restartForm" class="al-c" 
-              onsubmit="createSpinner()"
-              action="<%= PATH_RESTART_PM2 %>" method="post">
-          <section class="d-flex">
-            <button type="button" class="btn bg-dkorange" id="btnRestartPm2">
-              <i class="fas fa-redo"></i> Restart (PM2)
-            </button>
-            <button type="submit" class="btn bg-green dp-n" id="btnConfirmRestartPm2">
-              <i class="fas fa-check-circle"></i> ยืนยัน
-            </button>
-          </section>
-        </form>
-      </div>
-
-
-
-    </section>
-
+    <!-- #3 : ห้ามลบ -->
+    <!-- <div id="tabcontent1" class="tabcontent">
+      <- include('partials/manageSettingsSystem_server.ejs' ) >
+    </div> -->
 
 
   </main>
@@ -181,11 +72,18 @@
   <!--  -->
   <%- include('partials/footer') %>
 
+  <!-- เริ่มต้นคลิกแท็บตอนโหลดหน้าเว็บ -->
+  <script type="text/javascript">
+    const tabNumberClicked = `<%= tabNumberClicked %>`;
+  </script>
+
+
   <!--  -->
-  <% if(!IS_PRODUCTION) { %>
+  <% if(!global.IS_PRODUCTION) { %>
   <script type="text/javascript" src="/js/script_all.js?v=<%= time %>"></script>
   <script type="text/javascript" src="/js/nav.js"></script>
   <script type="text/javascript" src="/js/notify.js?v=<%= time %>"></script>
+  <script type="text/javascript" src="/js/tabMenu.js"></script>
   <script type="text/javascript" src="/js/manageSettingsSystem.js?v=<%= time %>"></script>
   <% } else { %>
   <script type="text/javascript" src="/js-min/manageSettingsSystem.obf.js?v=<%= time %>"></script>

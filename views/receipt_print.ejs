@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en"><head>
   <title><%= title %></title>
-  <% if(!IS_PRODUCTION) { %>
+  <% if(!global.IS_PRODUCTION) { %>
   <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/utils.css?v=<%= time %>">
   <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/flex.css?v=<%= time %>">
   <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/same.css?v=<%= time %>"> 
   <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/receipt.css?v=<%= time %>"> 
   <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css/same_print.css?v=<%= time %>"> 
   <% } else { %>
-  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css-min/receiptPrint.min.css">
+  <link rel="stylesheet" href="<%= global.DOMAIN_ALLOW %>/css-min/receipt_print.min.css">
   <% }  %>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@400;700&display=swap');
@@ -98,18 +98,18 @@
       </section><!-- paper ctn -->
     </form>
 
+    <!--  -->
+    <% if(action == 'print') { %>
+      <%- include('partials/print_footer.ejs') %>
+    <% } %>
     
   </main>
-
-  <!--  -->
-  <% if(action == 'print') { %>
-    <%- include('partials/print_footer.ejs') %>
-  <% } %>
   
-  <% if(!IS_PRODUCTION) { %>
+  
+  <% if(!global.IS_PRODUCTION) { %>
   <script src="<%= global.DOMAIN_ALLOW %>/js/print_adjust.js"></script>
   <% } else { %>
-  <script src="<%= global.DOMAIN_ALLOW %>/js-min/receiptPrint.obf.js"></script>
+  <script src="<%= global.DOMAIN_ALLOW %>/js-min/receipt_print.obf.js"></script>
   <% }  %>
 
 </body>

@@ -15,12 +15,13 @@
   <link rel="stylesheet" href="/cdn/flatpickr.min.css">
   <script src="/cdn/flatpickr.js"></script>
 
-  <% if(!IS_PRODUCTION) { %>
+  <% if(!global.IS_PRODUCTION) { %>
   <link rel="stylesheet" href="/css/utils.css?v=<%= time %>">
-  <link rel="stylesheet" href="/css/fontsAnuphan.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/fonts.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/toast.css?v=<%= time %>">
-  <link rel="stylesheet" href="/css/flex.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/alink.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/flex.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/footer.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/nav.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/modal.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/same.css?v=<%= time %>">
@@ -44,7 +45,7 @@
       <form class="header-toolbar-1 search-form" onsubmit="event.preventDefault();" >
 
         <!-- ใช้สำหรับระบุว่าจะค้นหาที่คอเล็กชั่นไหน : ใช้ import -->
-        <input type="hidden" name="collName" value="quotation">
+        <input type="hidden" name="collName" value="<%= global.dbColl_quotation %>">
 
         <input class="al-c bdr3 no-x" type="search" autocomplete="off"
                title="เลขที่/ปี-เดือน-วัน/ลูกค้า"
@@ -225,10 +226,10 @@
             
             <!-- ภาพลายเซ็น -->
             <div id="proposerImageSignatureCtn">
-              <% if(userImageSignature_Src) { %>
+              <% if(user.userImageSignature_Src) { %>
               <img id="proposerImageSignature"
                    onerror="this.style.display='none';"
-                   src="<%- userImageSignature_Src ? userImageSignature_Src : '' %>" 
+                   src="<%- user.userImageSignature_Src ? user.userImageSignature_Src : '' %>" 
                    alt="ลายเซ็นผู้เสนอราคา">
               <% } %>
             </div>
@@ -238,7 +239,7 @@
 
               <!-- มาจาก Session : ดึง userId มาเลย  -->
               <input type="hidden" id="proposerId" name="proposerId" tabindex="-1"
-                     value="<%= userId ? userId : '' %>">
+                     value="<%= user.userId ? user.userId : '' %>">
 
               <!--  -->
               <div class="col-100 d-flex justify-content-between bt-k-d">
@@ -247,7 +248,7 @@
                   <input class="al-c fw-b" type="text" 
                          id="proposerFullname" name="proposerFullname" tabindex="-1"
                          readonly
-                         value="<%= userFullname ? userFullname : '' %>">
+                         value="<%= user.userFullname ? user.userFullname : '' %>">
                 </span>
                 <span class="">)</span>
               </div>
@@ -269,8 +270,7 @@
 
   <!--  -->
   <script>
-    const USER_ID_SESSION = `<%= userId %>` ;
-
+    const USER_ID_SESSION = `<%= user.userId %>` ;
     const PATH_MAIN = `<%= PATH_MAIN %>`
     const PATH_FETCH = `<%= PATH_FETCH %>`
     const PATH_SEARCH = `<%= PATH_SEARCH %>`
@@ -283,7 +283,7 @@
     const SIP = `<%= SIP %>`
     const SIP_QUOTATION = `<%= SIP_QUOTATION %>`
   </script>
-  <% if(!IS_PRODUCTION) { %>
+  <% if(!global.IS_PRODUCTION) { %>
   <script type="text/javascript" src="/js/script_all.js?v=<%= time %>"></script>
   <script type="text/javascript" src="/js/nav.js?v=<%= time %>"></script>
   <script type="text/javascript" src="/js/notify.js?v=<%= time %>"></script>

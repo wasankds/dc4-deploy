@@ -16,14 +16,20 @@ const sourceProject = 'D:\\aWK_LeaseSystem\\DC4';
 //=== โฟลเดอร์ที่จะก๊อปปี้ ใช้กับทั้งต้นทาง และ ปลายทาง
 const folderNames = [
   // โฟลเดอร์ระบบ
-  'middleware', 'mymodule', 'routes-min',  'views',  
+  'middleware', 'mymodule-min', 'routes-min',  'views',  
   // โฟลเดอร์ public แยกย่อยด้วย 
   'public/cdn', 'public/css-min', 'public/fonts', 'public/images', 'public/js-min', 'public/static', 
   // โฟลเดอร์สำหรับเก็บข้อมูลเอนทิตี้ 
   'docs', 'items', 'users',                          
 ];
 //=== ไฟล์ที่จะก๊อปปี้ ใช้กับทั้งต้นทาง และ ปลายทาง
-const fileNames = ['dc4.js', 'package.json', 'README.md', 'create_folders.js', '.gitignore'];
+const fileNames = [
+  'dc4.js',
+  '.env-deploy',
+  'package.json',
+  'README.md',
+  // '.gitignore' ,  ไม่เหมือนกันระหว่าง dev กับ deploy
+];
 
 //=== สร้าางตัวแปรใหม่ที่มีโครงสร้าง
 //  { copyType: 'folder' | 'file', source: 'path', destination: 'path' }

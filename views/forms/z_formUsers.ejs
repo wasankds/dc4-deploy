@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title??'-' %></title>
+
+  <!-- Font Awesome -->
+  <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+  <!-- bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap');
+    * {
+      font-family: "Anuphan", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 400;
+      font-style: normal;
+      font-variation-settings: "wdth" 100;
+    }
+    body{
+      max-width: 21cm;
+      margin: auto; 
+    }
+    p{ 
+      font-size: 0.85rem;
+      margin-top: 0!important;
+      margin-bottom: 0!important;
+    }
+
+    .table{ margin-bottom: 0; }
+    .table thead th ,
+    .table tbody td {
+      font-size: 0.85rem;
+      padding: 3px;
+      border: 1px solid black;
+      font-weight: 600;
+    }
+
+    .small{font-size: 0.75rem; }
+    /* ทำให้ชิดขอบซ้ายขวา */
+    .row { --bs-gutter-x: 0rem;}
+
+    /* V2 */
+    .page-break-after { 
+      page-break-after: always; 
+      border-bottom: 1px dashed gray ;
+      padding-bottom: 10px;
+    } 
+
+    @media print {
+      @page {
+        size: A4;
+        margin: 0.75cm;
+      }
+      .table {
+        border-collapse: collapse;
+      }
+      .table th, 
+      .table td {
+        border: 1px solid black !important;
+      }
+      .page-break-after {
+        border-bottom: none;
+      } 
+    }
+  </style>
+</head>
+<body>
+
+  <main class="container mt-4">
+    
+    <!--  -->
+    <div class="row pt-2">
+      <h5 class="col-12 text-center"><%= title??'-' %></h5> 
+    </div>      
+    <p class="text-center border-bottom pb-2"><%= dateTime %></p>   
+    
+    <% usersFind.forEach( (user,index) => { %>
+
+    <section class="row mt-3 border-bottom pb-2">
+
+      <div class="col-5 ps-0 pe-0 pt-1 text-start">
+        <p>
+          <span><%= index + 1 %>.)</span>
+          <span>ไอดี</span> : 
+          <span class="text-primary fw-bold"><%= user.userId %></span>
+          <span class="fw-bold <%= user.userIsActive == 'active' ? 'text-success' : 'text-danger' %>">
+            ( <%= user.userIsActive %> )
+          </span>
+        </p>
+      </div> 
+
+      <!--  -->
+      <div class="col-5 ps-0 pe-0 text-start">
+        <p>
+          <span>ชื่อผู้ใช้</span> : 
+          <span class="text-primary fw-bold"><%= user.username %></span>
+        </p>
+      </div> 
+      <div class="col-2 ps-0 pe-0 pt-1">
+        <p class="text-start">
+          <span>สิทธิ์การใช้งาน</span> : 
+          <span class="text-primary fw-bold"><%= user.userAuthority %></span>
+        </p>
+      </div>     
+
+      <!--  -->
+      <div class="col-12 ps-0 pe-0 text-start">
+        <p>
+          <span>ชื่อ</span> : 
+          <span class="text-primary fw-bold">
+            <%= user.userPrefix %>
+            <%= user.userFirstname %>
+            <%= user.userLastname %>
+          </span>
+        </p>
+      </div> 
+
+      <!--  -->
+      <div class="col-5 ps-0 pe-0 text-start">
+        <p>
+          <span>อิเมล์</span> : 
+          <span class="text-primary fw-bold"><%= user.userEmail %></span>
+        </p>
+      </div> 
+      <div class="col-7 ps-0 pe-0 text-start">
+        <p>
+          <span>โทรศัพท์</span> : 
+          <span class="text-primary fw-bold"><%= user.userPhone %></span>
+        </p>
+      </div> 
+    </section>
+
+    <% }) %>
+  </main>
+</body>
+</html>

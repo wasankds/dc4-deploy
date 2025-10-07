@@ -1,6 +1,5 @@
 # Custom
 package-lock.json
-dbProcessExcel
 
 # ลบการติดตามโฟลเดอร์ที่เคยตามออกไป
 # git rm -r --cached items

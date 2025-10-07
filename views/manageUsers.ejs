@@ -11,16 +11,17 @@
   <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
   <script src="/cdn/sweetalert2.all.min.js"></script>
 
-  <% if(!IS_PRODUCTION) { %>
+  <% if(!global.IS_PRODUCTION) { %>
   <link rel="stylesheet" href="/css/utils.css?v=<%= time %>">
-  <link rel="stylesheet" href="/css/fontsAnuphan.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/fonts.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/alink.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/toast.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/footer.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/nav.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/flexNew.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/input.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/pagination5btns3.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/tableFix1col.css?v=<%= time %>"> 
-  <link rel="stylesheet" href="/css/nav.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/same.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/manageUsers.css?v=<%= time %>">
   <% } else { %>
@@ -38,27 +39,15 @@
     const isItem = item != null 
   %>
 
+  <header class="header-title">
+    <p class="al-c fc-white">
+      <i class="fas fa-user-clock mg-r-l"></i> 
+      <span><%= title %></span>
+    </p>
+  </header>
+
+
   <main>
-
-
-    <!-- Title -->
-    <section class="main-title pd-b-xxl">
-      <h1 class="al-c">
-        <i class="fas fa-users-cog mg-r-m"></i> 
-        <span><%= title %></span>
-      </h1>
-    </section>      
-
-    
-    <!-- 
-    **********************************************************
-    **********************************************************
-    **********************************************************
-    *********************** LEFT *****************************
-    **********************************************************
-    **********************************************************
-    **********************************************************
-    -->
 
     <!-- LEFT -->
     <section class="main-left">
@@ -75,20 +64,29 @@
         <!-- #1 : Toolbar-->
         <div class="toolbar-ctn">
 
-          <!-- สร้างใหม่ ให้ล้างฟอร์มไปเลย -->
-          <button type="button" class="btn bg-new pd-r-l pd-l-l"
+          <!-- ล้างฟอร์ม -->
+          <button type="button" class="btn-xlh btn-sm bg-clear pd-r-l pd-l-l" title="ล้างฟอร์ม"
                   onclick="event.preventDefault();clearForm(event)">
-            <i class="fas fa-plus-circle pd-r-m"></i>สร้างใหม่
+            <i class="fas fa-broom"></i>
+            <!-- ล้างฟอร์ม -->
           </button>
 
-          <button type="button" class="btn bg-print pd-r-l pd-l-l"
+          <!-- สร้างผู้ใช้ใหม่ -->
+          <button class="btn-xlh btn-sm bg-new" id="btnCreateNew" title="สร้างผู้ใช้ใหม่ทันที หลังล็อกอินต้องเปลี่ยนรหัสผ่านทันที">
+            <i class="fas fa-user-plus"></i>
+            <!-- สร้างผู้ใช้ใหม่ -->
+          </button>
+
+          <button type="button" class="btn-xlh btn-sm bg-print pd-r-l pd-l-l" title="พิมพ์"
                   onclick="event.preventDefault();printUsersJs(event)">
-            <i class="fas fa-print pd-r-m"></i>พิมพ์
+            <i class="fas fa-print"></i>
+            <!-- พิมพ์ -->
           </button>
 
 
-          <button type="submit" class="btn bg-save pd-r-l pd-l-l">
-            <i class="fas fa-save pd-r-m"></i>บันทึก
+          <button type="submit" class="btn-xlh btn-sm bg-save pd-r-l pd-l-l" title="บันทึก">
+            <i class="fas fa-save"></i>
+            <!-- บันทึก -->
           </button>
         </div>
 
@@ -161,16 +159,16 @@
                 <option value=""  <%= (isItem && item.userAuthority == '-') ?  'selected' : '' %>>-</option>
 
                 <!-- 2.) ผูู้ใช้งานเป็น A : จะเลือกได้เฉพาะ A,U -->
-                <% if( ['A'].includes(userAuthority) ){ %>
+                <% if( ['A'].includes(user.userAuthority) ){ %>
                 <option value="A" <%= (isItem && item.userAuthority == 'A') ? 'selected' : '' %>>A</option>
                 <option value="U" <%= (isItem && item.userAuthority == 'U') ? 'selected' : '' %>>U</option>
                 <% } %>
 
                 <!-- 3. ถ้าเป็น O -->
-                <% if(['O'].includes(userAuthority)){ %>
+                <% if(['O'].includes(user.userAuthority)){ %>
                   <!-- ไม่ใช่ตัวเอง(session) -->
                   <!-- ถ้าเป็นตัวเองที่กำลังใช้งานอยู่ ไม่สามารถเปลี่ยนสิทธิตัวเองเป็น A/U ได้ -->
-                  <% if(item && item._id != user_id ){ %>
+                  <% if(item && item._id != user.user_id ){ %>
                     <option value="A" <%= (isItem && item.userAuthority == 'A') ? 'selected' : '' %>>A</option>
                     <option value="U" <%= (isItem && item.userAuthority == 'U') ? 'selected' : '' %>>U</option>
                     <option value="O" <%= (isItem && item.userAuthority == 'O') ? 'selected' : '' %>>O</option>
@@ -281,7 +279,7 @@
 
         <!-- Toolbar -->
         <div class="toolbar-ctn">
-          <button type="submit" class="btn bg-upload pd-r-l pd-l-l">
+          <button type="submit" class="btn-xlh btn-sm bg-upload pd-r-l pd-l-l">
             <i class="fas fa-upload pd-r-m"></i>อัปโหลด
           </button>
         </div>
@@ -335,24 +333,25 @@
     <section class="main-right">
 
       <!-- Search -->
-      <form class="row toolbar-ctn  pd-b-m" 
+      <form class="toolbar-ctn  pd-b-m" 
             action="<%= PATH_MAIN %>" method="get" 
             onsubmit="createSpinner()">
+
         <!-- -->
         <input type="hidden" name="load_id" value="<%= load_id %>">
         
         <!--  -->
-        <div class="row">
-          <input class="col-8 al-c clickable" type="search"
+        <div class="flex-row">
+          <input class="flex-9 al-c clickable" type="search"
                  id="sip" name="sip" placeholder="รหัสผู้ใช้, ชื่อผู้ใช้, ชื่อ"
                  value="<%= sip ? sip : '' %>">        
-          <button class="col-2 bg-search pd-l-l pd-r-l" type="submit">
+          <button class="btn-xlh btn-sm bg-search pd-l-l pd-r-l" type="submit">
             <i class="fas fa-search"></i>
           </button>
         </div>
 
         <!--  -->
-        <div>
+        <div class="flex-row">
           <label class="al-r pd-r-s">แถว/หน้า</label>
           <select class="al-c" 
                   name="rpp" id="rpp" onchange="this.form.submit()">
@@ -466,7 +465,7 @@
                       <input type="hidden" name="sip" value="<%= sip %>">
                       <input type="hidden" name="page" value="<%= page %>">
                       <!-- btn-delete ใช้สำหรับ Swal -->
-                      <button type="button" class="mg-s btn-delete bg-delete pd-l-l pd-r-l pd-t-s pd-b-s">
+                      <button type="button" class="btn-xlh btn-sm mg-s btn-delete bg-delete pd-l-l pd-r-l pd-t-s pd-b-s">
                         <i class="fas fa-trash-alt"></i>
                       </button>
 
@@ -502,11 +501,12 @@
   <!--  -->
   <script type="text/javascript">
     var PATH_MAIN = `<%= PATH_MAIN %>` ;     
-    var PATH_PRINT = `<%= PATH_PRINT %>` ;     
+    var PATH_PRINT = `<%= PATH_PRINT %>` ;    
+    var PATH_NEW = `<%= PATH_NEW %>` ; 
     var USER_AUTHORITIES = JSON.parse(`<%- JSON.stringify(global.USER_AUTHORITIES) %>`) ;
     var PREFIX = '<%= PREFIX %>' ; 
   </script>
-  <% if(!IS_PRODUCTION) { %>
+  <% if(!global.IS_PRODUCTION) { %>
   <script type="text/javascript" src="/js/script_all.js?v=<%= time %>"></script>
   <script type="text/javascript" src="/js/nav.js?v=<%= time %>"></script>
   <script type="text/javascript" src="/js/notify.js"></script>

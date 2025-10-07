@@ -1,0 +1,37 @@
+
+
+<!-- right#2 -->
+<div class="flex-row">
+
+  <label class="al-r pd-r-s">เดือน</label>
+  <select class="col-sm-w100 al-c" id="selectMonth" name="selectMonth">          
+    <% monthDocs.forEach( m => { %>
+    <option value="<%= m.month %>"><%= m.monthName %></option>
+    <% }) %>
+  </select>      
+
+  <!-- ปฏิทินเอกสาร -->
+  <button class="btn-xlh btn-sm bg-mediumseagreen" 
+          type="button" id="btnCalendar" 
+          title="ปฏิทินเอกสารรายเดือน"
+          onclick="concludeDocsCalendar();">
+    <i class="fa fa-calendar mg-r-s"></i>ปฏิทิน
+  </button>
+
+  <button class="btn-xlh btn-sm bg-cornblue " type="button" 
+        id="btnConcludeDocReport"
+        title="สรุปเอกสารรายเดือน" 
+        onclick="concludeDocs('month');">
+      <i class="fa fa-file-alt"></i> สรุป
+  </button>
+
+  <!-- ปฏิทินเอกสาร -->
+  <!-- <button class="col-sm-1-5  lh-xn btn bg-mediumseagreen" 
+          type="button" id="btnCalendar" 
+          onclick="concludeDocsCalendar(this,'calendarReport');">
+    <i class="fa fa-calendar"></i>
+  </button> -->
+
+</div>
+
+

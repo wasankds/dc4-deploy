@@ -15,9 +15,9 @@
   <link rel="stylesheet" href="/cdn/flatpickr.min.css">
   <script src="/cdn/flatpickr.js"></script>
 
-  <% if(!IS_PRODUCTION) { %>
+  <% if(!global.IS_PRODUCTION) { %>
   <link rel="stylesheet" href="/css/utils.css?v=<%= time %>">
-  <link rel="stylesheet" href="/css/fontsAnuphan.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/fonts.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/alink.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/toast.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/input.css?v=<%= time %>">
@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="/css/paginationItems.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/tableFix1col.css?v=<%= time %>"> 
   <link rel="stylesheet" href="/css/modal.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/footer.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/nav.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/same.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/items.css?v=<%= time %>"> 
@@ -41,15 +42,14 @@
     const isItem = item != null
   %>
 
-  <main >
+  <header class="header-title">
+    <p class="al-c fc-white">
+      <i class="fa-solid fa-box mg-r-l"></i> 
+      <span><%= title %></span>
+    </p>
+  </header>
 
-    <!-- Title -->
-    <section class="main-title pd-b-xxl">
-      <h1 class="al-c">
-        <i class="fas fa-box mg-r-m"></i> 
-        <span><%= title %></span>
-      </h1>
-    </section>
+  <main >
 
     <!-- Main Form -->
     <form action="<%= PATH_SAVE %>" id="mainFormCtn"
@@ -67,21 +67,21 @@
       <section id="toolbarCtn">
           
         <!-- U ดูได้อย่างเดียว -->
-        <% if( ["A","O"].includes(userAuthority) ){ %>
-        <button class="btn bg-new pd-r-l pd-l-l" 
+        <% if( ["A","O"].includes(user.userAuthority) ){ %>
+        <button class="btn-xlh btn-sm bg-new pd-r-l pd-l-l" 
                 onclick="event.preventDefault();clearForm(event)">
           <i class="fas fa-plus-circle pd-r-m"></i>สร้างใหม่
         </button>
         <% } %>
 
-        <button class="btn bg-print pd-r-l pd-l-l" 
+        <button class="btn-xlh btn-sm bg-print pd-r-l pd-l-l" 
                 onclick="event.preventDefault();printItemsTableJs(this)">
           <i class="fas fa-print pd-r-m"></i>พิมพ์
         </button>
 
         <!-- U ดูได้อย่างเดียว -->
-        <% if( ["A","O"].includes(userAuthority) ){ %>
-        <button type="submit" class="btn bg-save pd-r-l pd-l-l">
+        <% if( ["A","O"].includes(user.userAuthority) ){ %>
+        <button type="submit" class="btn-xlh btn-sm bg-save pd-r-l pd-l-l">
           <i class="fas fa-save pd-r-m"></i>บันทึก
         </button>
         <% } %>
@@ -102,10 +102,10 @@
       <section id="formCtn">
         
         <!-- #1  -->
-        <div class="row">
+        <div class="flex-row">
 
           <!--  -->
-          <div class="col-3 input-group">
+          <div class="col-sm-4 input-group">
             <label class="mg-r-s" title="Item ID">
               <i class="fas fa-id-badge"></i>
               <span>ไอดี</span>
@@ -122,25 +122,16 @@
           </div>
   
           <!--  -->
-          <div class="col-4 input-group">
+          <div class="col-sm-4 input-group">
             <label class="pd-r-s">
               <i class="fas fa-layer-group"></i>
-              <span>หมวดหมู่</span><span class="fc-lime">*</span>
-
-              <!--  -->
-              <a class="mg-l-m clickable fc-green" title="เพิ่มหมวดหมู่ใหม่"
-                 id="newCategory"><i class="fas fa-plus-circle pd-r-m"></i>
-              </a>
+              <span>หมวดหมู่</span><span class="fc-blue mg-l-m">*</span>
             </label>
-
-            <input class="al-c dp-n" type="text"  autocomplete="off"
-                   placeholder="หมวดหมู่ใหม่"
-                   id="categoryNew" name="categoryNew" >
-
+            <!--  -->
             <select class="al-l pd-l-m" title="หมวดหมู่"
-                    <%= ['U'].includes(userAuthority) ? 'disabled' : '' %>
+                    required
                     id="categoryId" name="categoryId" >
-              <option value="">-</option>      
+              <option value="">--- หมวดหมู่ ---</option>      
               <% dataItemsCategories.forEach( obj => { %>
               <option value="<%= obj.categoryId %>" <%= ( isItem && item.categoryId == obj.categoryId) ? 'selected' : '' %>>
                 [<%= obj.categoryId %>] <%= obj.categoryName %>
@@ -150,14 +141,14 @@
           </div>
   
           <!--  -->
-          <div class="col-3 input-group">
+          <div class="col-sm-2 input-group">
             <label class="pd-r-s">
               <i class="fas fa-flag"></i>
               <span>สถานะ</span>
               <span class="fc-lime">*</span>
             </label>
             <select class="al-c" title="สถานะ"
-                    <%= ['U'].includes(userAuthority) ? 'disabled' : '' %>
+                    <%= ['U'].includes(user.userAuthority) ? 'disabled' : '' %>
                     id="itemStatus" name="itemStatus">
               <option value="">-</option>              
               <option value="active" <%= (isItem && item.itemStatus == 'active') ? 'selected' : '' %> >active</option>              
@@ -166,18 +157,17 @@
         </div>
   
         <!-- #2 -->
-        <div class="row">
-
+        <div class="flex-row">
           <!--  -->
-          <div class="col-5 input-group">
+          <div class="col-f input-group">
             <label class="pd-r-s">
               <i class="fas fa-font"></i>
               <span>ชื่อ</span>
               <span class="fc-lime">*</span>
             </label>
             <div class="modalCtn">
-              <input class="al-l pd-l-m vd w-100" type="text" placeholder="ชื่อ" 
-                     <%= ['U'].includes(userAuthority) ? 'readonly' : '' %>
+              <input class="al-l pd-l-m  w-100" type="text" placeholder="ชื่อ" 
+                     <%= ['U'].includes(user.userAuthority) ? 'readonly' : '' %>
                      title="ชื่อไอเท็ม" autocomplete="off"
                      required 
                      id="itemName" name="itemName" 
@@ -187,9 +177,25 @@
               </div>
             </div>
           </div>
+        </div>
+
+        <div class="flex-row">
+          
+          <!--  -->
+          <div class="col-sm-2-5 input-group">
+            <label class="pd-r-s">
+              <i class="fas fa-money-bill-wave"></i>
+              <span>ราคา</span>
+            </label>
+            <input class="al-r pd-r-m " type="number" 
+                   placeholder="ราคา" title="ราคา" 
+                   <%= ['U'].includes(user.userAuthority) ? 'readonly' : '' %>
+                   id="itemPrice" name="itemPrice" 
+                   value="<%= isItem ? item.itemPrice : '' %>">
+          </div>
 
           <!--  -->
-          <div class="col-2 input-group">
+          <div class="col-sm-2-5 input-group">
             <label class="pd-r-s">
               <i class="fas fa-balance-scale"></i>
               <span>หน่วย</span>
@@ -197,68 +203,59 @@
             </label>          
             <input class="al-c" type="text" 
                   placeholder="หน่วย" title="Unit"
-                  <%= ['U'].includes(userAuthority) ? 'readonly' : '' %>
+                  <%= ['U'].includes(user.userAuthority) ? 'readonly' : '' %>
                   required
                   id="itemUnit" name="itemUnit" 
                   value="<%= isItem ? item.itemUnit : '' %>">
-          </div>  
+          </div>
+          
+            <!-- #4 -->
+          <% if(['O','A'].includes(user.userAuthority)){ %>
+          <div class="col-sm-5 input-group">
+            <label class="pd-r-s">
+              <i class="fas fa-image"></i>
+              <span>อัปโหลดภาพ</span>
+            </label>
+            <input class="al-l pd-l-m " type="file" 
+                  title="ไฟล์ภาพ .jpg, .jpeg, ไม่เกิน 10MB"
+                  accept="image/jpeg, image/jpg"
+                  id="itemImage" name="itemImage" >
+          </div>
+          <% } %>
 
           <!--  -->
-          <div class="col-3 input-group" id="dateCtn">
+          <!-- <div class="col-sm-3 input-group" id="dateCtn">
             <label class="pd-r-s" title="วันที่ลงทะเบียน">
               <i class="fas fa-calendar-alt"></i>
               <span>วันที่</span>
             </label>
             <input type="date" class="al-c bg-white" 
                    id="itemRegisterDateTh" name="itemRegisterDateTh"                   
-                   value="<%= isItem ? item.itemRegisterDate : '' %>">
-          </div>
+                   value="<= isItem ? item.itemRegisterDate : '' >">
+          </div> -->
 
         </div>
+
+
   
+ 
         <!-- #3 -->
+        <!-- 
         <div class="row">
-          <!--  -->
           <div class="col-8 input-group">
             <label class="pd-r-s">
               <i class="fas fa-align-left"></i>
               <span>รายละเอียด</span>
             </label>
-            <input class="al-l pd-l-m vd" type="text" 
+            <input class="al-l pd-l-m " type="text" 
                    placeholder="รายละเอียด" title="รายละเอียด" 
-                   <%= ['U'].includes(userAuthority) ? 'readonly' : '' %>
+                   <= ['U'].includes(user.userAuthority) ? 'readonly' : '' >
                    id="itemDesc" name="itemDesc" 
-                   value="<%= isItem ? item.itemDesc : '' %>">
+                   value="<= isItem ? item.itemDesc : '' >">
           </div>
-          <!--  -->
-          <div class="col-2 input-group">
-            <label class="pd-r-s">
-              <i class="fas fa-money-bill-wave"></i>
-              <span>ราคา</span>
-            </label>
-            <input class="al-l pd-l-m vd" type="number" 
-                   placeholder="ราคา" title="ราคา" 
-                   <%= ['U'].includes(userAuthority) ? 'readonly' : '' %>
-                   id="itemPrice" name="itemPrice" 
-                   value="<%= isItem ? item.itemPrice : '' %>">
-          </div>
-        </div>
-  
-        <!-- #4 -->
-        <% if(['O','A'].includes(userAuthority)){ %>
-        <div class="row">   
-          <div class="col-f input-group">
-            <label class="pd-r-s">
-              <i class="fas fa-image"></i>
-              <span>อัปโหลดภาพ</span>
-            </label>
-            <input class="al-l pd-l-m vd" type="file" 
-                   title="ไฟล์ภาพ .jpg, .jpeg, .png ไม่เกิน 1MB เท่านั้น"
-                   accept="image/jpeg, image/jpg, image/png"
-                   id="itemImage" name="itemImage" >
-          </div>
-        </div>
-        <% } %>
+        </div> 
+        --> 
+
 
       </section>
   
@@ -276,6 +273,7 @@
           </div>
         </div>
       </section>
+      
     </form>
 
 
@@ -297,20 +295,20 @@
       <input type="hidden" name="page" value="<%= pageAct %>">
 
       <!--  -->
-      <div class="search-1 row">
-        <button class="col-1 bg-search pd-l-l pd-r-l" type="submit">
+      <div class="search-1 flex-row flex-nowarp">
+        <button class="col-sm-1 btn-xlh btn-sm bg-search pd-l-l pd-r-l" type="submit">
           <i class="fas fa-search"></i>
         </button>
-        <input class="col-7 al-c" type="search" autocomplete="off" 
+        <input class="col-sm-7 al-c clickable" type="search" autocomplete="off" 
                placeholder="ไอดี/ชื่อ/รายละเอียด"
                name="sip" value="<%= sip %>">
-        <input class="col-2 al-c" type="text" readonly value="<%= totalDocs %>">
+        <input class="col-sm-2 al-c" type="text" readonly value="<%= totalDocs %>">
       </div>
 
       <!--  -->
-      <div class="search-2 row">
+      <div class="search-2 flex-row flex-nowarp">
 
-        <select class="col-7 al-l" title="ค้นหาตามหมวดหมู่" id="scid" name="scid"  >
+        <select class="col-sm-6-5 al-l" title="ค้นหาตามหมวดหมู่" id="scid" name="scid"  >
           <option value="">-</option>
           <% dataItemsCategories.forEach( obj => { %>
           <option value="<%= obj.categoryId %>" <%= obj.categoryId == scid ? 'selected' : ''  %>>
@@ -320,16 +318,16 @@
         </select>
 
         <!-- ค้นหาตามสถานะ -->
-        <select class="col-3 al-c" title="ค้นหาตามสถานะ" id="sis" name="sis">
+        <select class="col-sm-3-5 al-c" title="ค้นหาตามสถานะ" id="sis" name="sis">
           <option value="">-</option>
           <option value="active" <%= sis == 'active' ? 'selected' : '' %>>active</option>
         </select>
       </div>
 
       <!-- แถว/หน้า -->
-      <div class="search-3 row">
-        <label class="col-6 al-r mg-r-s">แถว/หน้า</label>
-        <select class="col-4 al-c" name="rpp" id="rpp" onchange="this.form.submit()">
+      <div class="search-3 flex-row flex-nowarp">
+        <label class="col-sm-5 al-r pd-r-s">แถว/หน้า</label>
+        <select class="col-sm-5 al-c" name="rpp" id="rpp" onchange="this.form.submit()">
           <option value="20" <%= rpp==20 ? 'selected' : '' %> >20</option>
           <option value="25" <%= rpp==25 ? 'selected' : '' %> >25</option>
           <option value="30" <%= rpp==30 ? 'selected' : '' %> >30</option>
@@ -337,10 +335,11 @@
           <option value="100" <%= rpp==100 ? 'selected' : '' %> >100</option>
           <option value="200" <%= rpp==200 ? 'selected' : '' %> >200</option>
           <option value="500" <%= rpp==500 ? 'selected' : '' %> >500</option>
-          <option value="1000" <%= rpp==1000 ? 'selected' : '' %> >1000</option>
-          <option value="2000" <%= rpp==2000 ? 'selected' : '' %> >2000</option>
+          <!-- <option value="1000" <= rpp==1000 ? 'selected' : '' > >1000</option> -->
+          <!-- <option value="2000" <= rpp==2000 ? 'selected' : '' > >2000</option> -->
         </select>
       </div>
+      
     </form>
       
 
@@ -398,13 +397,10 @@
               [<i class="fas fa-money-bill-wave"></i>]
               <i class="fas fa-font"></i>
             </th>
-            <th class="al-c clickable" onclick="sortTableJs(this, 5)" title="รายละเอียด">
-              <i class="fas fa-align-left"></i>
-            </th>
-              <th class="al-c clickable" onclick="sortTableJs(this, 6)" title="หน่วย">
+            <th class="al-c clickable" onclick="sortTableJs(this, 5)" title="หน่วย">
               <i class="fas fa-balance-scale"></i>
             </th>   
-            <th class="al-c clickable" onclick="sortTableJs(this, 7)" title="หมวดหมู่">
+            <th class="al-c clickable" onclick="sortTableJs(this, 6)" title="หมวดหมู่">
               <i class="fas fa-layer-group"></i>
             </th>         
             <th class="al-c"><i class="fas fa-trash-alt"></i></th>
@@ -468,12 +464,6 @@
               <span class="<%= class2Color %>"><%= obj.itemName.length > 20 ? obj.itemName.substring(0, 20) + '...' : obj.itemName %></span>
             </td>
 
-
-            <!-- 6 -->
-            <td class="al-l pd-l-s <%= class2Color %>" title="<%= obj.itemDesc %>">
-              <%= obj.itemDesc.length >35 ? obj.itemDesc.substring(0,35) + '...' : obj.itemDesc %>
-            </td> 
-
             <!-- 7 -->
             <td class="al-c <%= class2Color %>"><%= obj.itemUnit %></td>     
 
@@ -526,9 +516,9 @@
   <script>
     var PATH_PRINT = `<%= PATH_PRINT %>` ;
     var PREFIX = `<%= PREFIX %>` ;
-    var userAuthority = `<%= userAuthority %>` ;
+    var userAuthority = `<%= user.userAuthority %>` ;
   </script>
-  <% if(!IS_PRODUCTION) { %>
+  <% if(!global.IS_PRODUCTION) { %>
   <script type="text/javascript" src="/js/script_all.js?v=<%= time %>"></script>
   <script type="text/javascript" src="/js/nav.js?v=<%= time %>"></script>
   <script type="text/javascript" src="/js/notify.js?v=<%= time %>"></script>

@@ -11,15 +11,16 @@
   <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
   <script src="/cdn/sweetalert2.all.min.js"></script>
 
-  <% if(!IS_PRODUCTION) { %>
+  <% if(!global.IS_PRODUCTION) { %>
   <link rel="stylesheet" href="/css/utils.css?v=<%= time %>">
-  <link rel="stylesheet" href="/css/fontsAnuphan.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/fonts.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/alink.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/toast.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/input.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/flexNew.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/pagination5btns3.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/tableFix1col.css?v=<%= time %>"> 
+  <link rel="stylesheet" href="/css/footer.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/nav.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/same.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/itemsCategories.css?v=<%= time %>">
@@ -37,16 +38,16 @@
     const isItem = item != null
   %>
 
+  <header class="header-title">
+    <p class="al-c fc-white">
+      <i class="fas fa-layer-group mg-r-l"></i> 
+      <span><%= title %></span>
+    </p>
+  </header>
+
   <main>
     
-    <!-- Title -->
-    <section class="main-title pd-b-xxl">
-      <h1 class="al-c">
-        <i class="fas fa-layer-group mg-r-m"></i> 
-        <span><%= title %></span>
-      </h1>
-    </section>
-    
+
     <!-- 
     **********************************************************
     **********************************************************
@@ -75,17 +76,17 @@
         <!-- #1 : Toolbar-->
         <div class="toolbar-ctn">
 
-          <button type="button" class="btn bg-new pd-r-l pd-l-l" 
+          <button type="button" class="btn-xlh btn-sm bg-new pd-r-l pd-l-l" 
                   onclick="event.preventDefault();newJs(event)">
             <i class="fas fa-plus-circle pd-r-m"></i>สร้างใหม่
           </button>
 
-          <button type="button" class="btn bg-print pd-r-l pd-l-l"
+          <button type="button" class="btn-xlh btn-sm bg-print pd-r-l pd-l-l"
                   onclick="event.preventDefault();printJs(event)">
             <i class="fas fa-print pd-r-m"></i>พิมพ์
           </button>
 
-          <button type="submit" class="btn bg-save pd-r-l pd-l-l">
+          <button type="submit" class="btn-xlh btn-sm bg-save pd-r-l pd-l-l">
             <i class="fas fa-save pd-r-m"></i>บันทึก
           </button>
         </div>
@@ -164,23 +165,20 @@
       <form class="row toolbar-ctn pd-b-m" 
             action="<%= PATH_MAIN %>" method="get" 
             onsubmit="createSpinner()">
+
         <!-- -->
         <input type="hidden" name="load_id" value="<%= load_id %>">
         
         <!--  -->
-        <div class="row">
-          <input class="col-8 al-c clickable" type="search"
-                 id="sip" name="sip" placeholder="เลขที่, ชื่อ"
-                 value="<%= sip ? sip : '' %>">        
-          <button class="col-2 bg-search pd-l-l pd-r-l" type="submit">
+        <div class="flex-row flex-nowarp w-100">
+          <button class="col-sm-1 btn-xlh btn-sm bg-search pd-l-l pd-r-l" type="submit">
             <i class="fas fa-search"></i>
           </button>
-        </div>
-
-        <!--  -->
-        <div>
-          <label class="al-r pd-r-s">แถว/หน้า</label>
-          <select class="al-c" 
+          <input class="col-sm-5 al-c clickable" type="search"
+                 id="sip" name="sip" placeholder="เลขที่, ชื่อ"
+                 value="<%= sip ? sip : '' %>">
+          <label class="col-sm-2 al-r pd-r-s">แถว/หน้า</label>
+          <select class="col-sm-2 al-c" 
                   name="rpp" id="rpp" onchange="this.form.submit()">
             <option value="10" <%= rpp == '10' ? 'selected' : '' %> >10</option>
             <option value="20" <%= rpp == '20' ? 'selected' : '' %> >20</option>
@@ -195,6 +193,7 @@
         </div>
 
       </form>
+
 
       <!-- Pagination5btns -->
       <div class="pgMainCtn">
@@ -316,7 +315,7 @@
     var PREFIX = '<%= PREFIX %>' ; 
     var PATH_PRINT = `<%= PATH_PRINT %>` ;
   </script>
-  <% if(!IS_PRODUCTION) { %>
+  <% if(!global.IS_PRODUCTION) { %>
   <script type="text/javascript" src="/js/script_all.js?v=<%= time %>"></script>
   <script type="text/javascript" src="/js/nav.js?v=<%= time %>"></script>
   <script type="text/javascript" src="/js/notify.js"></script>

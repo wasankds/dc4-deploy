@@ -1,5 +1,11 @@
 <!--  -->
-# Docs Creator
+# DC4
+
+## คีย์ลัดดูไฟล์ README.md ใน VS Code
+
+- กด <kbd>Ctrl</kbd> + <kbd>P</kbd> แล้วพิมพ์ `README.md` เพื่อเปิดไฟล์อย่างรวดเร็ว
+- หรือใช้ <kbd>Ctrl</kbd> + <kbd>B</kbd> เพื่อเปิด/ปิดแถบ Explorer แล้วคลิกที่ไฟล์ `README.md`
+
 
 
 <!-- 

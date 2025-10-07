@@ -15,13 +15,14 @@
   <link rel="stylesheet" href="/cdn/flatpickr.min.css">
   <script src="/cdn/flatpickr.js"></script>
 
-  <% if(!IS_PRODUCTION) { %>
+  <% if(!global.IS_PRODUCTION) { %>
   <link rel="stylesheet" href="/css/utils.css?v=<%= time %>">
-  <link rel="stylesheet" href="/css/fontsAnuphan.css?v=<%= time %>">
-  <link rel="stylesheet" href="/css/toast.css?v=<%= time %>">
-  <link rel="stylesheet" href="/css/flex.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/fonts.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/alink.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/toast.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/footer.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/nav.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/flex.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/modal.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/same.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/doc_input.css?v=<%= time %>">
@@ -70,8 +71,8 @@
 
         <!-- ตัวพิเศษ : ใช้คอลเล็กแบบเลือกได้  -->
         <select class="al-c h-100 bdr3 fs-m mg-l-xl" style="width:auto;" name="collName" >
-          <option value="quotation">ใบเสนอราคา</option>
-          <option value="invoice">ใบแจ้งหนี้</option>
+          <option value="<%= global.dbColl_quotation %>"><%= global.PAGE_QUOTATION %></option>
+          <option value="<%= global.dbColl_invoice %>"><%= global.PAGE_INVOICE %></option>
         </select>
       </form>
 
@@ -233,10 +234,10 @@
             
             <!-- ภาพลายเซ็น -->
             <div id="proposerImageSignatureCtn">
-              <% if(userImageSignature_Src) { %>
+              <% if(user.userImageSignature_Src) { %>
               <img id="proposerImageSignature"
                    onerror="this.style.display='none';"
-                   src="<%- userImageSignature_Src ? userImageSignature_Src : '' %>" 
+                   src="<%- user.userImageSignature_Src ? user.userImageSignature_Src : '' %>" 
                    alt="ลายเซ็นผู้เสนอราคา">
               <% } %>
             </div>
@@ -246,7 +247,7 @@
 
               <!-- มาจาก Session : ดึง userId มาเลย  -->
               <input type="hidden" id="proposerId" name="proposerId" tabindex="-1"
-                     value="<%= userId ? userId : '' %>">
+                     value="<%= user.userId ? user.userId : '' %>">
 
               <!--  -->
               <div class="col-100 d-flex justify-content-between bt-k-d">
@@ -255,7 +256,7 @@
                   <input class="al-c fw-b" type="text" 
                          id="proposerFullname" name="proposerFullname" tabindex="-1"
                          readonly
-                         value="<%= userFullname ? userFullname : '' %>">
+                         value="<%= user.userFullname ? user.userFullname : '' %>">
                 </span>
                 <span class="mg-t-m">)</span>
               </div>
@@ -277,7 +278,7 @@
 
   <!--  -->
   <script>
-    const USER_ID_SESSION = `<%= userId %>` ;
+    const USER_ID_SESSION = `<%= user.userId %>` ;
 
     const PATH_MAIN = `<%= PATH_MAIN %>` ;
     const PATH_FETCH = `<%= PATH_FETCH %>` ;
@@ -292,7 +293,7 @@
     const SIP_QUOTATION = `<%= SIP_QUOTATION %>` ;
     const SIP_INVOICE = `<%= SIP_INVOICE %>` ;
   </script>
-  <% if(!IS_PRODUCTION) { %>
+  <% if(!global.IS_PRODUCTION) { %>
   <script type="text/javascript" src="/js/script_all.js?v=<%= time %>"></script>
   <script type="text/javascript" src="/js/nav.js?v=<%= time %>"></script>
   <script type="text/javascript" src="/js/notify.js?v=<%= time %>"></script>

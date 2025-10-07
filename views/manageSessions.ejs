@@ -8,15 +8,16 @@
 <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"> -->
 <link rel="stylesheet" href="/cdn/fontawesome/css/all.min.css">
 
-<% if(!IS_PRODUCTION) { %>
+<% if(!global.IS_PRODUCTION) { %>
 <link rel="stylesheet" href="/css/utils.css?v=<%= time %>">
-<link rel="stylesheet" href="/css/fontsAnuphan.css?v=<%= time %>">
+<link rel="stylesheet" href="/css/fonts.css?v=<%= time %>">
 <link rel="stylesheet" href="/css/alink.css?v=<%= time %>">
 <link rel="stylesheet" href="/css/toast.css?v=<%= time %>">
+<link rel="stylesheet" href="/css/footer.css?v=<%= time %>">
+<link rel="stylesheet" href="/css/nav.css?v=<%= time %>">
 <link rel="stylesheet" href="/css/input.css?v=<%= time %>">
 <link rel="stylesheet" href="/css/tableFix1col.css?v=<%= time %>">
 <link rel="stylesheet" href="/css/paginationManageSessions.css?v=<%= time %>">
-<link rel="stylesheet" href="/css/nav.css?v=<%= time %>">
 <link rel="stylesheet" href="/css/same.css?v=<%= time %>">
 <link rel="stylesheet" href="/css/manageSessions.css?v=<%= time %>">
 <% } else { %>
@@ -30,15 +31,14 @@
   <%- include('partials/nav.ejs') %>
   <%- include('partials/notify.ejs', {msg:msg}) %> 
 
-  <main>
+  <header class="header-title">
+    <p class="al-c fc-white">
+      <i class="fas fa-user-clock mg-r-l"></i> 
+      <span><%= title %></span>
+    </p>
+  </header>
 
-    <!-- Title -->
-    <section class="pd-b-xxl">
-      <h1 class="al-c">
-        <i class="fas fa-user-clock mg-r-m"></i> 
-        <span><%= title %></span>
-      </h1>
-    </section>
+  <main>
 
     <!-- #1 : Toolbar-->
     <section class="toolbar-ctn">
@@ -145,7 +145,7 @@
   <%- include('partials/footer') %>
 
   <!--  -->
-  <% if(!IS_PRODUCTION) { %>
+  <% if(!global.IS_PRODUCTION) { %>
   <script src="/js/script_all.js"></script>
   <script src="/js/nav.js?v=<%= time %>"></script>
   <script src="/js/notify.js"></script>

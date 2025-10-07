@@ -1,0 +1,64 @@
+<!-- Toolbar#2 -->
+<div class="flex-row">
+  <button class="btn-xlh btn-sm bg-clear nowrap" type="button" 
+          onclick="clearSelectOne(this)"><i class="fa fa-broom"></i>
+  </button> 
+
+  <!-- เลือกยูสเซอร์ -->
+  <label class="col-sm-2  al-r pd-r-s">ยูสเซอร์</label>
+  <div class="col-sm-w100 flex-row">  
+    <div class="col-sm-7 modalCtn">
+      <input class="al-l pd-l-m h-100" type="text" 
+              id="searchUser" placeholder="ยูสเซอร์" 
+              onclick="clearSearchModal(this)" 
+              onfocus="popModalUsers(event)" 
+              oninput="popModalUsers(event)" 
+              autocomplete="off" tabindex="-1">
+      <div class="modal"><div class="modal-list"></div></div>
+    </div>
+    <!--  -->
+    <input class="col-sm-3 al-c" type="text" 
+            id="userId" placeholder="เลขที่ยูสเซอร์" readonly>
+
+  </div>  
+
+</div>
+
+
+<!-- Toolbar#3 -->
+<div class="flex-row">
+  <button class="btn-xlh btn-sm bg-clear nowrap" type="button" 
+          onclick="clearSelectOne(this)"><i class="fa fa-broom"></i>
+  </button> 
+
+  <!-- เลือก Item -->
+  <label class="col-sm-2 al-r pd-r-s">ไอเท็ม</label>
+  <div class="col-sm-w100 flex-row">
+    <div class="col-sm-7 modalCtn">
+      <input class="al-l pd-l-m h-100" type="text" 
+              id="searchItem" placeholder="ค้นหาไอเท็ม" 
+              onclick="clearSearchModal(this)" 
+              onfocus="popModalItems(event)" 
+              oninput="popModalItems(event)" 
+              autocomplete="off">
+      <div class="modal"><div class="modal-list"></div></div>
+    </div>
+    <input class="col-sm-3 al-c pd-l-m" type="text" 
+            id="itemId" placeholder="ไอเท็มไอดี" readonly>
+  </div>
+</div>
+
+<!-- Toolbar#4 -->
+<!-- <div class="row">
+  <label class="col-1-5  al-r pd-r-s">เลขที่เอกสาร</label>
+  <div class="col-8-5 modalCtn">
+    <input class="al-c pd-l-m" type="text" 
+            id="docId" placeholder="ค้นหาเอกสาร" 
+            onclick="clearSearchModal(this)" 
+            onfocus="popModalDocId(event)" 
+            oninput="popModalDocId(event)" 
+            autocomplete="off">
+    <div class="modal"><div class="modal-list"></div></div>
+  </div>
+</div> -->
+

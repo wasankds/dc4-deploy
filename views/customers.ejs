@@ -11,15 +11,16 @@
   <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
   <script src="/cdn/sweetalert2.all.min.js"></script>
 
-  <% if(!IS_PRODUCTION) { %>
+  <% if(!global.IS_PRODUCTION) { %>
   <link rel="stylesheet" href="/css/utils.css?v=<%= time %>">
-  <link rel="stylesheet" href="/css/fontsAnuphan.css?v=<%= time %>">
+  <link rel="stylesheet" href="/css/fonts.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/alink.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/toast.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/input.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/flexNew.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/pagination5btns3.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/tableFix1col.css?v=<%= time %>"> 
+  <link rel="stylesheet" href="/css/footer.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/nav.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/same.css?v=<%= time %>">
   <link rel="stylesheet" href="/css/customers.css?v=<%= time %>">
@@ -37,15 +38,16 @@
     const isItem = item != null
   %>
 
-  <main>
-    
-    <!-- Title -->
-    <section class="main-title pd-b-xxl">
-      <h1 class="al-c">
-        <i class="fas fa-users mg-r-m"></i> 
-        <span><%= title %></span>
-      </h1>
-    </section>
+  <header class="header-title bg-goldenrod">
+    <p class="al-c fc-white">
+      <i class="fas fa-user-clock mg-r-l"></i> 
+      <span><%= title %></span>
+    </p>
+  </header>
+
+  
+  <main>    
+
     
     <!-- 
     **********************************************************
@@ -75,17 +77,17 @@
         <!-- #1 : Toolbar-->
         <div class="toolbar-ctn">
 
-          <button type="button" class="btn bg-new pd-r-l pd-l-l" 
+          <button type="button" class="btn-xlh btn-sm bg-new pd-r-l pd-l-l" 
                   onclick="event.preventDefault();newJs(event)">
             <i class="fas fa-plus-circle pd-r-m"></i>สร้างใหม่
           </button>
 
-          <button type="button" class="btn bg-print pd-r-l pd-l-l"
+          <button type="button" class="btn-xlh btn-sm bg-print pd-r-l pd-l-l"
                   onclick="event.preventDefault();printJs(event)">
             <i class="fas fa-print pd-r-m"></i>พิมพ์
           </button>
 
-          <button type="submit" class="btn bg-save pd-r-l pd-l-l">
+          <button type="submit" class="btn-xlh btn-sm bg-save pd-r-l pd-l-l">
             <i class="fas fa-save pd-r-m"></i>บันทึก
           </button>
         </div>
@@ -94,20 +96,20 @@
         <div class="form-body">
 
           <!-- Row1 -->
-          <div class="row">
+          <div class="flex-row">
             <!--  -->
-            <div class="col-3 input-group">
+            <div class="col-sm-3 input-group">
               <label class="pd-r-s al-l lh-label" title="เลขที่ลูกค้า">
                 <i class="fas fa-hashtag mg-r-m"></i>เลขที่ลูกค้า
               </label>
-              <input class="al-c" type="number" id="customerId" name="customerId" 
-                     required readonly   
+              <input class="al-c no-arrows" type="number" id="customerId" name="customerId" 
+                     required readonly
                      placeholder="เลขที่ลูกค้า" readonly
                      value="<%= isItem ? item.customerId : '' %>">
             </div>
 
             <!--  -->
-            <div class="col-4 input-group">
+            <div class="col-sm-4 input-group">
               <label class="pd-r-s al-l lh-label" title="ประเภท">
                 <i class="fas fa-tags"></i> ประเภท
               </label>
@@ -125,7 +127,7 @@
             </div>
 
             <!--  -->
-            <div class="col-3 input-group">
+            <div class="col-sm-3 input-group">
               <label class="pd-r-s al-l lh-label" title="สถานะ">
                 <i class="fas fa-flag"></i> สถานะ
               </label>
@@ -143,7 +145,7 @@
           </div> <!-- Row1 -->
 
           <!-- Row2 -->
-          <div class="row mg-t-s">
+          <div class="flex-row mg-t-s">
             <div class="col-f input-group">
               <label class="pd-r-s al-l" title="customerName">
                 <i class="fas fa-font"></i> ชื่อ *
@@ -156,8 +158,21 @@
 
           </div> <!-- Row2 -->    
 
+          <!-- Row9 -->
+          <div class="flex-row mg-t-s">
+            <div class="col-f input-group">
+              <label class="pd-r-s al-l" title="customerTaxId">
+                <i class="fas fa-user"></i> ผู้ติดต่อ
+              </label>
+              <input class="pd-l-m al-l" type="text"
+                     placeholder="ผู้ติดต่อ"
+                     id="customerContactPerson" name="customerContactPerson" 
+                     value="<%= isItem ? item.customerContactPerson : '' %>">
+            </div>
+          </div> <!-- Row9-->
+
           <!-- Row3 -->
-          <div class="row mg-t-s">
+          <div class="flex-row mg-t-s">
             <div class="col-f input-group">
               <label class="pd-r-s al-l" title="customerAddress2">
                 <i class="fas fa-map-marker-alt"></i> ที่อยู่1
@@ -169,7 +184,7 @@
           </div> <!-- Row3 -->    
 
           <!-- Row4 -->
-          <div class="row mg-t-s">
+          <div class="flex-row mg-t-s">
             <div class="col-f input-group">
               <label class="pd-r-s al-l" title="customerAddress2">
                 <i class="fas fa-map-marker-alt"></i> ที่อยู่2
@@ -181,8 +196,8 @@
           </div> <!-- Row4 -->    
 
           <!-- Row5 -->
-          <div class="row mg-t-s">
-            <div class="col-f input-group">
+          <div class="flex-row mg-t-s">
+            <div class="col-sm-5 input-group">
               <label class="pd-r-s al-l" title="customerPhone">
                 <i class="fas fa-phone"></i> โทรศัพท์
               </label>
@@ -191,10 +206,20 @@
                      placeholder="โทรศัพท์ เช่น โทรฯ 081-111-1111 (ใส่ข้อความตามต้องการ)"
                      value="<%= isItem ? item.customerPhone : '' %>">
             </div>
+
+            <div class="col-sm-5 input-group">
+              <label class="pd-r-s al-l" title="customerEmail">
+                <i class="fas fa-envelope"></i> อีเมล
+              </label>
+              <input class="pd-l-m al-l" type="text"
+                     id="customerEmail" name="customerEmail" 
+                     placeholder="อีเมล เช่น อิเมล์ wasankds@gmail.com (ใส่ข้อความตามต้องการ)"
+                     value="<%= isItem ? item.customerEmail : '' %>">
+            </div>
           </div> <!-- Row5 -->    
 
           <!-- Row6 -->
-          <div class="row mg-t-s">
+          <div class="flex-row mg-t-s">
             <div class="col-f input-group">
               <label class="pd-r-s al-l" title="customerWebsite">
                 <i class="fas fa-globe"></i> เว็บไซต์
@@ -206,22 +231,9 @@
             </div>
           </div> <!-- Row6 -->    
 
-          <!-- Row7 -->
-          <div class="row mg-t-s">
-            <div class="col-f input-group">
-              <label class="pd-r-s al-l" title="customerEmail">
-                <i class="fas fa-envelope"></i> อีเมล
-              </label>
-              <input class="pd-l-m al-l" type="text"
-                     id="customerEmail" name="customerEmail" 
-                     placeholder="อีเมล เช่น อิเมล์ wasankds@gmail.com (ใส่ข้อความตามต้องการ)"
-                     value="<%= isItem ? item.customerEmail : '' %>">
-            </div>
-          </div> <!-- Row7 -->    
-
           <!-- Row8 -->
-          <div class="row mg-t-s gap-1">
-            <div class="col-5 input-group">
+          <div class="flex-row mg-t-s">
+            <div class="col-sm-5 input-group">
               <label class="pd-r-s al-l" title="customerTaxId">
                 <i class="fas fa-id-card"></i> เลขประจำตัวผู้เสียภาษี
               </label>
@@ -233,7 +245,7 @@
                      value="<%= isItem ? item.customerTaxId : '' %>">
             </div>
 
-            <div class="col-5 input-group">
+            <div class="col-sm-5 input-group">
               <label class="pd-r-s al-l" title="customerIdentityId">
                 <i class="fas fa-id-card"></i> เลขประจำตัวประชาชน
               </label>
@@ -246,18 +258,7 @@
             </div>
           </div> <!-- Row8-->
 
-          <!-- Row9 -->
-          <div class="row mg-t-s gap-1">
-            <div class="col-f input-group">
-              <label class="pd-r-s al-l" title="customerTaxId">
-                <i class="fas fa-user"></i> ผู้ติดต่อ
-              </label>
-              <input class="pd-l-m al-l" type="text"
-                     placeholder="ผู้ติดต่อ"
-                     id="customerContactPerson" name="customerContactPerson" 
-                     value="<%= isItem ? item.customerContactPerson : '' %>">
-            </div>
-          </div> <!-- Row9-->
+
 
 
 
@@ -282,36 +283,30 @@
     <section class="main-right">
 
       <!-- Search -->
-      <form class="row toolbar-ctn" 
-            action="<%= PATH_MAIN %>" method="get" 
-            onsubmit="createSpinner()">
+      <form class="toolbar-ctn pd-b-m" id="searchForm" action="<%= PATH_MAIN %>" method="get" >
+
         <!-- -->
-        <input type="hidden" name="load_id" value="<%= load_id %>">
-        
+        <input type="hidden" name="load_id" value="<%= load_id %>">        
+
         <!--  -->
-        <div class="row">
-          <input class="col-8 al-c clickable" type="search"
-                 id="sip" name="sip" placeholder="เลขที่ลูกค้า, ชื่อ"
+        <div class="flex-row">
+          <input class="flex-9 al-c clickable" type="search"
+                 id="sip" name="sip" placeholder="รหัสผู้ใช้, ชื่อผู้ใช้, ชื่อ"
                  value="<%= sip ? sip : '' %>">        
-          <button class="col-2 bg-search pd-l-l pd-r-l" type="submit">
+          <button class="btn-xlh btn-sm bg-search pd-l-l pd-r-l" type="submit">
             <i class="fas fa-search"></i>
           </button>
         </div>
 
         <!--  -->
-        <div>
+        <div class="flex-row">
           <label class="al-r pd-r-s">แถว/หน้า</label>
           <select class="al-c" 
                   name="rpp" id="rpp" onchange="this.form.submit()">
-            <option value="10" <%= rpp == '10' ? 'selected' : '' %> >10</option>
             <option value="20" <%= rpp == '20' ? 'selected' : '' %> >20</option>
             <option value="30" <%= rpp == '30' ? 'selected' : '' %> >30</option>
             <option value="50" <%= rpp == '50' ? 'selected' : '' %> >50</option>
             <option value="100" <%= rpp == '100' ? 'selected' : '' %> >100</option>
-            <option value="200" <%= rpp == '200' ? 'selected' : '' %> >200</option>
-            <option value="500" <%= rpp == '500' ? 'selected' : '' %> >500</option>
-            <option value="1000" <%= rpp == '1000' ? 'selected' : '' %> >1000</option>
-            <option value="2000" <%= rpp == '2000' ? 'selected' : '' %> >2000</option>
           </select>
         </div>
 
@@ -437,7 +432,8 @@
     var PREFIX = '<%= PREFIX %>' ; 
     var PATH_PRINT = `<%= PATH_PRINT %>` ;
   </script>
-  <% if(!IS_PRODUCTION) { %>
+
+  <% if(!global.IS_PRODUCTION) { %>
   <script type="text/javascript" src="/js/script_all.js?v=<%= time %>"></script>
   <script type="text/javascript" src="/js/nav.js?v=<%= time %>"></script>
   <script type="text/javascript" src="/js/notify.js"></script>
