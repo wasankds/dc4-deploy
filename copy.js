@@ -16,7 +16,7 @@ const sourceProject = 'D:\\aWK_LeaseSystem\\DC4';
 //=== โฟลเดอร์ที่จะก๊อปปี้ ใช้กับทั้งต้นทาง และ ปลายทาง
 const folderNames = [
   // โฟลเดอร์ระบบ
-  'middleware', 'mymodule-min', 'routes-min',  'views',  
+  'middleware', 'mymodule-min', 'routes-min',  'views', 'commandSystem-min',  
   // โฟลเดอร์ public แยกย่อยด้วย 
   'public/cdn', 'public/css-min', 'public/fonts', 'public/images', 'public/js-min', 'public/static', 
   // โฟลเดอร์สำหรับเก็บข้อมูลเอนทิตี้ 
