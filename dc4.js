@@ -14,7 +14,7 @@ global.dbName = process.env.DB_NAME
 global.dbUrl = process.env.DB_URL
 global.mymoduleFolder = global.IS_PRODUCTION ? 'mymodule-min' : 'mymodule'
 const routesFolder = global.IS_PRODUCTION ? 'routes-min' : 'routes'
-import './mymodule/myGlobal.js'
+await import(`./${mymoduleFolder}/myGlobal.js`)
 const app = express()
 //=== Sessionss
 const MongoStore = MongoDBSession(session)

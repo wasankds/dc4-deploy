@@ -1,6 +1,6 @@
 
-import { MongoClient } from 'mongodb'
-import * as myDateTime from "../mymodule/myDateTime.js"
+// import { MongoClient } from 'mongodb'
+// import * as myDateTime from "../mymodule/myDateTime.js"
 // import * as myUsers from "../mymodule/myUsers.js"
 // import { ObjectId } from 'Ongodb';  
 // import url from 'url';
@@ -58,51 +58,51 @@ const mauth = {
     }
   },
 
-  logger: async (req, res, next) => {
-    // const url_parts = url.parse(req.url, true)
-    const host = req.get('host')
-    const path = req.originalUrl
-    const nowLocal = myDateTime.nowLocal()
+  // logger: async (req, res, next) => {
+  //   // const url_parts = url.parse(req.url, true)
+  //   const host = req.get('host')
+  //   const path = req.originalUrl
+  //   const nowLocal = myDateTime.nowLocal()
 
-    //==== เก็บลงไฟล์ Log แบบต่อๆกันไป *** ห้ามลบ ***
-    // try {
-    //   const logData = {
-    //     method: req.method,
-    //     url: req.url,
-    //     headers: req.headers,
-    //     query: req.query,
-    //     params: req.params,
-    //     body: req.body,   
-    //     host: host,
-    //     path: path,
-    //     originalUrl: req.originalUrl,
-    //     nowLocal: nowLocal,      
-    //   }
-    //   const logString = `\n---------------------\n${nowLocal}\nHost: ${host}\nPath: ${path}\n\nRequest Details:\n${JSON.stringify(logData, null, 2)}`;             
-    //   await fs.promises.appendFile('request.log', logString, 'utf-8');
-    // }catch (error) {
-    //   console.error("Error writing to log file: ", error);
-    // }
+  //   //==== เก็บลงไฟล์ Log แบบต่อๆกันไป *** ห้ามลบ ***
+  //   // try {
+  //   //   const logData = {
+  //   //     method: req.method,
+  //   //     url: req.url,
+  //   //     headers: req.headers,
+  //   //     query: req.query,
+  //   //     params: req.params,
+  //   //     body: req.body,   
+  //   //     host: host,
+  //   //     path: path,
+  //   //     originalUrl: req.originalUrl,
+  //   //     nowLocal: nowLocal,      
+  //   //   }
+  //   //   const logString = `\n---------------------\n${nowLocal}\nHost: ${host}\nPath: ${path}\n\nRequest Details:\n${JSON.stringify(logData, null, 2)}`;             
+  //   //   await fs.promises.appendFile('request.log', logString, 'utf-8');
+  //   // }catch (error) {
+  //   //   console.error("Error writing to log file: ", error);
+  //   // }
 
-    const client = new MongoClient(dbUrl);
-    const main = async () => {
-      await client.connect();
-      const db = client.db(dbName);
-      const collection = db.collection(dbColl_visits);
-      await collection.insertOne({
-        host: host,
-        path: path,
-        nowLocal: nowLocal,
-      });
-    };
-    main().then(() => {
-            next()
-          }).catch((err) => {
-            next(err)
-          }).finally(() => {
-            client.close()
-          })
-  },
+  //   const client = new MongoClient(dbUrl);
+  //   const main = async () => {
+  //     await client.connect();
+  //     const db = client.db(dbName);
+  //     const collection = db.collection(dbColl_visits);
+  //     await collection.insertOne({
+  //       host: host,
+  //       path: path,
+  //       nowLocal: nowLocal,
+  //     });
+  //   };
+  //   main().then(() => {
+  //           next()
+  //         }).catch((err) => {
+  //           next(err)
+  //         }).finally(() => {
+  //           client.close()
+  //         })
+  // },
 
 }
 
